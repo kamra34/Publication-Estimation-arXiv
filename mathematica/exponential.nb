@@ -1,0 +1,236 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      7875,        228]
+NotebookOptionsPosition[      6869,        205]
+NotebookOutlinePosition[      7229,        221]
+CellTagsIndexPosition[      7186,        218]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "check", " ", "if", " ", "pdf", " ", "integral", " ", "is", " ", "1"}], 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Assuming", "[", 
+    RowBox[{"defAssum", ",", 
+     RowBox[{"Integrate", "[", 
+      RowBox[{
+       RowBox[{"ExponentialPDF", "[", "x", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "0", ",", "Infinity"}], "}"}]}], "]"}]}], "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "General", " ", "order", " ", "statistic", " ", "pdf", " ", "of", " ", 
+     "Exponential", " ", "noise"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ExponentialPDForder", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"N", "*", 
+        RowBox[{"ExponentialPDF", "[", "x", "]"}], "*", 
+        RowBox[{"Binomial", "[", 
+         RowBox[{
+          RowBox[{"N", "-", "1"}], ",", 
+          RowBox[{"k", "-", "1"}]}], "]"}], "*", 
+        RowBox[{
+         RowBox[{"ExponentialCDF", "[", "x", "]"}], "^", 
+         RowBox[{"(", 
+          RowBox[{"k", "-", "1"}], ")"}]}], "*", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"1", "-", 
+            RowBox[{"ExponentialCDF", "[", "x", "]"}]}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"N", "-", "k"}], ")"}]}], ")"}]}], "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "minimum", " ", "order", " ", "statistic", " ", "pdf", " ", "of", " ", 
+     "Exponential", " ", "noise"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ExponentialPDFMinorder", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"N", "*", 
+        RowBox[{"ExponentialPDF", "[", "x", "]"}], "*", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"1", "-", 
+            RowBox[{"ExponentialCDF", "[", "x", "]"}]}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"N", "-", "1"}], ")"}]}], ")"}]}], "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "bias", " ", "of", " ", "minimum", " ", "order", " ", "statistic", " ", 
+     "for", " ", "Exponential", " ", "noise"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ExponentialMean", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"Integrate", "[", 
+        RowBox[{
+         RowBox[{"x", "*", 
+          RowBox[{"ExponentialPDFMinorder", "[", "x", "]"}]}], ",", 
+         RowBox[{"{", 
+          RowBox[{"x", ",", "0", ",", "Infinity"}], "}"}]}], "]"}], "]"}]}], 
+     "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Variance", " ", "of", " ", "minimum", " ", "order", " ", "statistic", 
+     " ", "for", " ", "Exponential", " ", "noise"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"ExponentialVar", "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{
+        RowBox[{"FullSimplify", "[", 
+         RowBox[{"Integrate", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"x", "^", "2"}], "*", 
+            RowBox[{"ExponentialPDFMinorder", "[", "x", "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"x", ",", "0", ",", "Infinity"}], "}"}]}], "]"}], "]"}], 
+        "-", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"ExponentialMean", "[", "x", "]"}], ")"}], "^", "2"}]}], 
+       "]"}]}], "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.745219885902046*^9, 3.745219902117757*^9}, {
+   3.745219985468607*^9, 3.745220157280437*^9}, {3.745220206668695*^9, 
+   3.745220212079088*^9}, 
+   3.7455870291433477`*^9},ExpressionUUID->"5aa617a3-9871-4d79-acc6-\
+cd67d1f74ee7"],
+
+Cell[BoxData[
+ RowBox[{"1", "-", 
+  SuperscriptBox["\[ExponentialE]", 
+   RowBox[{"-", 
+    FractionBox["x", "b"]}]]}]], "Output",
+ CellChangeTimes->{{3.745220137444203*^9, 3.7452201636523943`*^9}, 
+   3.74522021560837*^9},ExpressionUUID->"668dd30c-c417-4426-9836-\
+a5669fba4ad4"],
+
+Cell[BoxData[
+ FractionBox[
+  SuperscriptBox["\[ExponentialE]", 
+   RowBox[{"-", 
+    FractionBox["x", "b"]}]], "b"]], "Output",
+ CellChangeTimes->{{3.745220137444203*^9, 3.7452201636523943`*^9}, 
+   3.745220215612225*^9},ExpressionUUID->"8448ec3b-8a4d-4d90-8128-\
+43fd43faf7ba"],
+
+Cell[BoxData["1"], "Output",
+ CellChangeTimes->{{3.745220137444203*^9, 3.7452201636523943`*^9}, 
+   3.745220215688436*^9},ExpressionUUID->"0d589733-b68f-4d2f-a6f6-\
+de4e59eb839e"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{
+   SuperscriptBox["\[ExponentialE]", 
+    FractionBox[
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "1"}], "+", "k", "-", "N"}], ")"}], " ", "x"}], "b"]], 
+   " ", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     RowBox[{"1", "-", 
+      SuperscriptBox["\[ExponentialE]", 
+       RowBox[{"-", 
+        FractionBox["x", "b"]}]]}], ")"}], 
+    RowBox[{
+     RowBox[{"-", "1"}], "+", "k"}]], " ", "N", " ", 
+   RowBox[{"Binomial", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"-", "1"}], "+", "N"}], ",", 
+     RowBox[{
+      RowBox[{"-", "1"}], "+", "k"}]}], "]"}]}], "b"]], "Output",
+ CellChangeTimes->{{3.745220137444203*^9, 3.7452201636523943`*^9}, 
+   3.745220215913165*^9},ExpressionUUID->"4668cb0e-a311-4c93-8190-\
+7d6e757457a7"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{
+   SuperscriptBox["\[ExponentialE]", 
+    RowBox[{"-", 
+     FractionBox[
+      RowBox[{"N", " ", "x"}], "b"]}]], " ", "N"}], "b"]], "Output",
+ CellChangeTimes->{{3.745220137444203*^9, 3.7452201636523943`*^9}, 
+   3.745220215931526*^9},ExpressionUUID->"b5a2e5d7-c96d-4cbf-bd89-\
+7a7e3b5bd94f"],
+
+Cell[BoxData[
+ FractionBox["b", "N"]], "Output",
+ CellChangeTimes->{{3.745220137444203*^9, 3.7452201636523943`*^9}, 
+   3.7452202160394793`*^9},ExpressionUUID->"03b60f18-e19e-456f-a678-\
+c9f3dc7642b8"],
+
+Cell[BoxData[
+ FractionBox[
+  SuperscriptBox["b", "2"], 
+  SuperscriptBox["N", "2"]]], "Output",
+ CellChangeTimes->{{3.745220137444203*^9, 3.7452201636523943`*^9}, 
+   3.7452202161569843`*^9},ExpressionUUID->"e0995027-2c3d-45e3-a1d0-\
+07c606fdd2f9"]
+}, Open  ]]
+},
+WindowSize->{808, 911},
+WindowMargins->{{319, Automatic}, {72, Automatic}},
+FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 3938, 104, 430, "Input",ExpressionUUID->"5aa617a3-9871-4d79-acc6-cd67d1f74ee7"],
+Cell[4521, 128, 280, 7, 41, "Output",ExpressionUUID->"668dd30c-c417-4426-9836-a5669fba4ad4"],
+Cell[4804, 137, 279, 7, 61, "Output",ExpressionUUID->"8448ec3b-8a4d-4d90-8128-43fd43faf7ba"],
+Cell[5086, 146, 179, 3, 34, "Output",ExpressionUUID->"0d589733-b68f-4d2f-a6f6-de4e59eb839e"],
+Cell[5268, 151, 794, 26, 70, "Output",ExpressionUUID->"4668cb0e-a311-4c93-8190-7d6e757457a7"],
+Cell[6065, 179, 332, 9, 62, "Output",ExpressionUUID->"b5a2e5d7-c96d-4cbf-bd89-7a7e3b5bd94f"],
+Cell[6400, 190, 201, 4, 51, "Output",ExpressionUUID->"03b60f18-e19e-456f-a678-c9f3dc7642b8"],
+Cell[6604, 196, 249, 6, 54, "Output",ExpressionUUID->"e0995027-2c3d-45e3-a1d0-07c606fdd2f9"]
+}, Open  ]]
+}
+]
+*)
+

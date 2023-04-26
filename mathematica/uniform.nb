@@ -1,0 +1,274 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8908,        266]
+NotebookOptionsPosition[      7806,        242]
+NotebookOutlinePosition[      8167,        258]
+CellTagsIndexPosition[      8124,        255]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "Asumptions", " ", "that", " ", "are", " ", "explicitly", " ", 
+    "considered"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"defAssum", " ", ":=", 
+     RowBox[{
+      RowBox[{"Element", "[", 
+       RowBox[{"b", ",", "Reals"}], "]"}], "&&", 
+      RowBox[{"b", ">", "0"}], "&&", 
+      RowBox[{"Element", "[", 
+       RowBox[{"N", ",", "Integers"}], "]"}], "&&", 
+      RowBox[{"N", ">", "0"}], "&&", 
+      RowBox[{"Element", "[", 
+       RowBox[{"k", ",", "Integers"}], "]"}], "&&", 
+      RowBox[{"k", ">", "0"}], "&&", 
+      RowBox[{"k", "\[LessEqual]", "N"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Uniform", " ", "CDF"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"UniformCDF", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"x", "/", "b"}], "]"}]}], "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Uniform", " ", "PDF"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"UniformPDF", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"D", "[", 
+        RowBox[{
+         RowBox[{"UniformCDF", "[", "x", "]"}], ",", "x"}], "]"}], "]"}]}], 
+     "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "check", " ", "if", " ", "pdf", " ", "integral", " ", "is", " ", "1"}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"Assuming", "[", 
+    RowBox[{"defAssum", ",", 
+     RowBox[{"Integrate", "[", 
+      RowBox[{
+       RowBox[{"UniformPDF", "[", "x", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "0", ",", "b"}], "}"}]}], "]"}]}], "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "General", " ", "order", " ", "statistic", " ", "pdf", " ", "of", " ", 
+     "Uniform", " ", "noise"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"UniformPDForder", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"N", "*", 
+        RowBox[{"UniformPDF", "[", "x", "]"}], "*", 
+        RowBox[{"Binomial", "[", 
+         RowBox[{
+          RowBox[{"N", "-", "1"}], ",", 
+          RowBox[{"k", "-", "1"}]}], "]"}], "*", 
+        RowBox[{
+         RowBox[{"UniformCDF", "[", "x", "]"}], "^", 
+         RowBox[{"(", 
+          RowBox[{"k", "-", "1"}], ")"}]}], "*", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"1", "-", 
+            RowBox[{"UniformCDF", "[", "x", "]"}]}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"N", "-", "k"}], ")"}]}], ")"}]}], "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "minimum", " ", "order", " ", "statistic", " ", "pdf", " ", "of", " ", 
+     "Uniform", " ", "noise"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"UniformPDFMinorder", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"N", "*", 
+        RowBox[{"UniformPDF", "[", "x", "]"}], "*", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"1", "-", 
+            RowBox[{"UniformCDF", "[", "x", "]"}]}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"N", "-", "1"}], ")"}]}], ")"}]}], "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "bias", " ", "of", " ", "minimum", " ", "order", " ", "statistic", " ", 
+     "for", " ", "Uniform", " ", "noise"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"UniformMean", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"Integrate", "[", 
+        RowBox[{
+         RowBox[{"x", "*", 
+          RowBox[{"UniformPDFMinorder", "[", "x", "]"}]}], ",", 
+         RowBox[{"{", 
+          RowBox[{"x", ",", "0", ",", "b"}], "}"}]}], "]"}], "]"}]}], "]"}]}],
+    "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Variance", " ", "of", " ", "minimum", " ", "order", " ", "statistic", 
+     " ", "for", " ", "Uniform", " ", "noise"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"UniformVar", "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{
+        RowBox[{"FullSimplify", "[", 
+         RowBox[{"Integrate", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"x", "^", "2"}], "*", 
+            RowBox[{"UniformPDFMinorder", "[", "x", "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"x", ",", "0", ",", "b"}], "}"}]}], "]"}], "]"}], "-", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"UniformMean", "[", "x", "]"}], ")"}], "^", "2"}]}], 
+       "]"}]}], "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.745553828601429*^9, 3.745553952072266*^9}, {
+  3.7455541860679407`*^9, 
+  3.7455541952448673`*^9}},ExpressionUUID->"a81d190d-9c33-47f4-9362-\
+68a4379ae9b1"],
+
+Cell[BoxData[
+ FractionBox["x", "b"]], "Output",
+ CellChangeTimes->{
+  3.7455539671752243`*^9},ExpressionUUID->"86a75536-03f7-4d55-a8fc-\
+89a19addbe6d"],
+
+Cell[BoxData[
+ FractionBox["1", "b"]], "Output",
+ CellChangeTimes->{
+  3.745553967181992*^9},ExpressionUUID->"367e5d92-9e75-478c-ac89-\
+892b5f671352"],
+
+Cell[BoxData["1"], "Output",
+ CellChangeTimes->{
+  3.745553967186309*^9},ExpressionUUID->"b86ebdbf-a572-416b-8d9c-\
+64e6a547da81"],
+
+Cell[BoxData[
+ RowBox[{
+  SuperscriptBox["b", 
+   RowBox[{"-", "N"}]], " ", "N", " ", 
+  SuperscriptBox[
+   RowBox[{"(", 
+    RowBox[{"b", "-", "x"}], ")"}], 
+   RowBox[{
+    RowBox[{"-", "k"}], "+", "N"}]], " ", 
+  SuperscriptBox["x", 
+   RowBox[{
+    RowBox[{"-", "1"}], "+", "k"}]], " ", 
+  RowBox[{"Binomial", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"-", "1"}], "+", "N"}], ",", 
+    RowBox[{
+     RowBox[{"-", "1"}], "+", "k"}]}], "]"}]}]], "Output",
+ CellChangeTimes->{
+  3.745553967271268*^9},ExpressionUUID->"6fa83eb7-3209-47e8-b144-\
+9af16157b1cd"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{"N", " ", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     RowBox[{"1", "-", 
+      FractionBox["x", "b"]}], ")"}], 
+    RowBox[{
+     RowBox[{"-", "1"}], "+", "N"}]]}], "b"]], "Output",
+ CellChangeTimes->{
+  3.7455539672976294`*^9},ExpressionUUID->"9b315426-967b-4588-8d33-\
+5dd3855f5205"],
+
+Cell[BoxData[
+ FractionBox["b", 
+  RowBox[{"1", "+", "N"}]]], "Output",
+ CellChangeTimes->{
+  3.745553969594563*^9},ExpressionUUID->"67ae8542-7b77-4806-b65c-\
+87ebf1109df8"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{
+   SuperscriptBox["b", "2"], " ", "N"}], 
+  RowBox[{
+   SuperscriptBox[
+    RowBox[{"(", 
+     RowBox[{"1", "+", "N"}], ")"}], "2"], " ", 
+   RowBox[{"(", 
+    RowBox[{"2", "+", "N"}], ")"}]}]]], "Output",
+ CellChangeTimes->{
+  3.7455539713589897`*^9},ExpressionUUID->"cf49f2d9-a5d2-4a28-a506-\
+97926e27139e"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.745553812894216*^9, 3.745553813049181*^9}, 
+   3.745553953745801*^9},ExpressionUUID->"c4aca87c-7ef2-4769-a1b5-\
+d2a54dd774ad"]
+},
+WindowSize->{808, 911},
+WindowMargins->{{556, Automatic}, {Automatic, 122}},
+FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 5121, 138, 535, "Input",ExpressionUUID->"a81d190d-9c33-47f4-9362-68a4379ae9b1"],
+Cell[5704, 162, 152, 4, 49, "Output",ExpressionUUID->"86a75536-03f7-4d55-a8fc-89a19addbe6d"],
+Cell[5859, 168, 150, 4, 51, "Output",ExpressionUUID->"367e5d92-9e75-478c-ac89-892b5f671352"],
+Cell[6012, 174, 130, 3, 34, "Output",ExpressionUUID->"b86ebdbf-a572-416b-8d9c-64e6a547da81"],
+Cell[6145, 179, 561, 20, 35, "Output",ExpressionUUID->"6fa83eb7-3209-47e8-b144-9af16157b1cd"],
+Cell[6709, 201, 322, 11, 58, "Output",ExpressionUUID->"9b315426-967b-4588-8d33-5dd3855f5205"],
+Cell[7034, 214, 173, 5, 51, "Output",ExpressionUUID->"67ae8542-7b77-4806-b65c-87ebf1109df8"],
+Cell[7210, 221, 348, 12, 57, "Output",ExpressionUUID->"cf49f2d9-a5d2-4a28-a506-97926e27139e"]
+}, Open  ]],
+Cell[7573, 236, 229, 4, 73, "Input",ExpressionUUID->"c4aca87c-7ef2-4769-a1b5-d2a54dd774ad"]
+}
+]
+*)
+

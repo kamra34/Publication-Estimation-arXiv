@@ -1,0 +1,64 @@
+clear all; close all
+% This code corresponds to the comparison of BLUe and order statistics
+
+
+% -------------- Simulation parameters ----------------
+Nmc = 1500; % number of MC run
+NobsVec = 2:5:2000; % data sample size
+alpha1 = 0.01; % mixture components
+alpha2 = 0.5; % mixture components
+alpha3 = 0.99; % mixture components
+
+% -------------- Define estimators ----------------
+% Blue estimator
+blueEstimator = @(N,y,a,b) ((1/N)*sum(y) - ((b*(1-a))/2));
+% proposed estimator
+estimator = @(Na,ys) ys(Na);
+
+for NobsIter=1:length(NobsVec) % loop for samples of varying sizes
+%     rng('default')
+    Nobs = NobsVec(NobsIter);
+    
+    for NmcIter = 1:Nmc % Nmc monte carlo runs for each sample size
+        
+        % randomly generate b and x
+        std = 8; %Normal std
+        b = 60; % Uniform maximum support
+        x0 = 10; % true parameter value
+        U1 = rand(Nobs,1)<=alpha1; % U is true with probability p and false with probability 1-p
+        U2 = rand(Nobs,1)<=alpha2; % U is true with probability p and false with probability 1-p
+        U3 = rand(Nobs,1)<=alpha3; % U is true with probability p and false with probability 1-p
+        
+        e1 = (1-U1).*unifrnd(0,b,Nobs,1)+U1.*normrnd(0,std,Nobs,1);
+        y1 = x0 + e1; % generate the measurement vector
+        
+        e2 = (1-U2).*unifrnd(0,b,Nobs,1)+U2.*normrnd(0,std,Nobs,1);
+        y2 = x0 + e2; % generate the measurement vector
+        
+        e3 = (1-U3).*unifrnd(0,b,Nobs,1)+U3.*normrnd(0,std,Nobs,1);
+        y3 = x0 + e3; % generate the measurement vector
+        
+        % all estimators
+        Na1 = floor(Nobs*alpha1/2)+1;
+        Na2 = floor(Nobs*alpha2/2)+1;
+        Na3 = floor(Nobs*alpha3/2)+1;
+        xhat1 = estimator(Na1,sort(y1));
+        xhat2 = estimator(Na2,sort(y2));
+        xhat3 = estimator(Na3,sort(y3));
+        
+        theoreticalVarBlue_(NobsIter,NmcIter) = ((b^2*(1+((2-3*alpha1)*alpha1))) + 12*alpha1*std^2) / (12*N);
+    end % NmcIter
+    
+    % simulation variance after Nmc iterations for each sample size
+    var1(NobsIter) = mean(var1_(NobsIter,:));
+    var2(NobsIter) = mean(var2_(NobsIter,:));
+    var3(NobsIter) = mean(var3_(NobsIter,:));
+    %     var4(NobsIter) = mean(var4_(NobsIter,:));
+    
+    % simulation bias after Nmc iterations for each sample size
+    bias1(NobsIter) = mean(bias1_(NobsIter,:));
+    bias2(NobsIter) = mean(bias2_(NobsIter,:));
+    bias3(NobsIter) = mean(bias3_(NobsIter,:));
+    %     bias4(NobsIter) = mean(bias4_(NobsIter,:));
+end % NobsIter
+

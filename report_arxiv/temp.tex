@@ -1,0 +1,228 @@
+\PassOptionsToPackage{draft}{hyperref}
+\documentclass{article}
+
+
+\usepackage{arxiv}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% 
+%Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}
+\usepackage[dvips]{graphicx}
+\usepackage{caption}
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{subfigure}
+%\usepackage{cite}
+\usepackage{stfloats} 
+\usepackage{color}
+\graphicspath{{figures/}}
+\usepackage{subcaption}
+\usepackage{bm}
+\usepackage{framed} % or, "mdframed"
+\usepackage[framed]{ntheorem}
+\usepackage{algorithm,algorithmic}
+\usepackage{multirow}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% 
+%Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\fig}[1]{
+	\centerline{\includegraphics[width=9cm]{#1.eps}}
+}
+\newcommand{\twofig}[2]{
+	\centerline{\includegraphics[width=7cm]{#1.eps}
+		\includegraphics[width=7
+		cm]{#2.eps}}
+}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\DeclareMathOperator*{\argmin}{arg\,min} 
+\DeclareMathOperator*{\argmax}{arg\,max} 
+\graphicspath{{./fig/}}
+\newframedtheorem{frm-thm}{Theorem}
+
+\title{Exploring positive noise in estimation theory}
+
+
+\author{
+%  David S.~Hippocampus\thanks{Use footnote for providing further
+%    information about author (webpage, alternative
+%    address)---\emph{not} for acknowledging funding agencies.} \\
+%  Department of Computer Science\\
+%  Cranberry-Lemon University\\
+%  Pittsburgh, PA 15213 \\
+%  \texttt{hippo@cs.cranberry-lemon.edu} \\
+%  %% examples of more authors
+%   \And
+% Elias D.~Striatum \\
+%  Department of Electrical Engineering\\
+%  Mount-Sheikh University\\
+%  Santa Narimana, Levand \\
+%  \texttt{stariate@ee.mount-sheikh.edu} \\
+  %% \AND
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+  %% \And
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+  %% \And
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+}
+
+\begin{document}
+For the estimation problem $y_k=x+e_k$, where $e_k\sim\mathcal{U}[0,b]$, we want to find the MVU estimator. We first represent the PDF of the data as
+%
+%
+\begin{subequations}
+\begin{align}
+p(y_k;x,b) = \left\{\begin{matrix}
+\frac{1}{b} & x<y_k<x+b \\ 
+0 & \mathrm{otherwise} 
+\end{matrix}\right.	
+\end{align}
+%
+%
+or alternatively
+\begin{align}
+p(y_k;x,b) = \frac{1}{b}\left[\sigma(y_k-x) - \sigma(y_k-(x+b))\right]
+\end{align}
+%
+%
+Hence,
+	%
+%
+\begin{align}
+p(\bm{y};x,b) &= \frac{1}{b^N}\prod_{k=1}^{N}\left[\sigma(y_k-x) - \sigma(y_k-x-b)\right]\nonumber\\
+&=\frac{1}{b^N}\left[\sigma(\min y_k -x) - \sigma(\max y_k -x -b)\right]%\nonumber\\
+%&=g\left(T_1(\bm{y}),T_2(\bm{y}),x\right)\cdot h(\bm{y}),
+\label{eq:unknown}
+\end{align}
+%
+%
+%that can also be written, alternatively, in terms of the product of the two step functions
+%%
+%%
+%\begin{align}
+%p(\bm{y};x,b) = \frac{1}{b^N}\sigma(x+b-\max y_k)\sigma(\min y_k -x)
+%\end{align}
+%
+%	
+\end{subequations}	
+
+Since we cannot approach the problem of finding MVU using CRLB, I use the Rao-Blackwell-Lehmann-Scheffe theorem. The theorem gives that for any unbiased estimator $\tilde{\bm{\theta}}$ and sufficient statistics $\bm{T}(\bm{y})$, $\hat{\bm{\theta}}=\E(\tilde{\bm{\theta}}\mid\bm{T}(\bm{y}))$ is unbiased and $\Var(\hat{\bm{\theta}})\leq\Var(\tilde{\bm{\theta}})$. Additionally, if $\bm{T}(\bm{y})$ is complete, then $\hat{\bm{\theta}}$ is MVU.
+
+It is also shown in~\cite{book:ET_kay_93} that if the dimension of the sufficient statistics is equal to the dimension of the parameter, then the MVU estimator is given by $\hat{\bm{\theta}}=\bm{g}(\bm{T}(\bm{y}))$ for any function $\bm{g}(\cdot)$ that satisfy
+%
+%
+\begin{align}
+\E(\bm{g}(\bm{T})) = \bm{\theta}
+\end{align}
+%
+%
+Hence, if we can find the sufficient statistics, and if we can show that it is complete, then we can find the MVU estimator. For that, we can use the Neyman-Fisher theorem that gives the sufficient statistic $\bm{T}(\bm{y})$ if we can factorize the PDF as 
+%
+%
+\begin{align}
+p(\bm{y};\theta) = g(T(\bm{y}),\theta)h(\bm{y})
+\end{align}
+%
+%
+In our problem, from~\eqref{eq:unknown} for $\bm{\theta}=[x,b]^\top$ we can say $h(\bm{y})=1$ and 
+%
+%
+\begin{subequations}\label{eq:sufficient_statistic}
+	%
+	%
+	\begin{align}
+	\bm{T}(\bm{y}) = \begin{bmatrix}
+	\min y \\ \max y
+	\end{bmatrix} = \begin{bmatrix}
+	T_1(\bm{y}) \\ T_2(\bm{y})
+	\end{bmatrix}
+	\end{align}
+	%
+	%
+	and
+	%
+	%
+	\begin{align}
+	\E(\bm{T}(\bm{y})) = \begin{bmatrix}
+	x+\frac{b}{N+1}\\\\x+\frac{Nb}{N+1}
+	\end{bmatrix}
+	\end{align}
+	%
+	%
+\end{subequations}
+%
+%
+Then, any function $\bm{g}(\cdot)$ that makes~\eqref{eq:sufficient_statistic} unbiased would be MVU. 
+\section{Known b}
+At this point, I am not sure if the same line of reasoning holds. Since now, $b$ is not a parameter anymore. However, if it holds, since we know $b$, we can say that both
+%
+%
+\begin{align}
+\hat{x}_{min} = \min y - \frac{b}{N+1}\\
+\hat{x}_{max} = \max y - \frac{Nb}{N+1}
+\end{align}
+%
+%
+are MVU estimators. In other words, the MVU estimator is not unique.
+\section{Unknown b}
+This case fits better to the theorem. Since we are only interested in $x$, I try to make a function that makes $\bm{T_1}$ unbiased. Let
+%
+%
+\begin{subequations}
+	%
+	%
+	\begin{align}
+	\bm{g}(\bm{T}(\bm{y})) =  \begin{bmatrix}
+	T_1-\frac{1}{N}T_2\\\\T_2
+	\end{bmatrix}
+	\end{align}
+	%
+	%
+	this gives
+	%
+	%
+	\begin{align}
+	\E(\bm{g}(\bm{T}(\bm{y}))) = \begin{bmatrix}
+	\frac{N-1}{N}x\\\\\times
+	\end{bmatrix}
+	\end{align}
+	%
+	%
+	Hence, an unbiased estimate of $x$ would be given by multiplying first row by $\frac{N}{N-1}$
+	%
+	%
+	\begin{align}
+	\hat{x}_{MVU} &= \frac{N}{N-1}\left(T_1-\frac{1}{N}T_2\right) = \frac{N}{N-1}T_1 - \frac{1}{N-1}T_2\nonumber\\
+	&= \frac{N}{N-1}\min y_k - \frac{1}{N-1} \max y_k
+	\end{align}
+	%
+	%
+\end{subequations}
+
+
+\bibliographystyle{unsrt}
+%\bibliography{references}
+%\bibliographystyle{IEEEtran}
+\bibliography{./ref/arxiv_18}
+\end{document}

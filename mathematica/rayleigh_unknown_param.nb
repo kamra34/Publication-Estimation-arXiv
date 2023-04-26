@@ -1,0 +1,1356 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     57320,       1348]
+NotebookOptionsPosition[     54544,       1307]
+NotebookOutlinePosition[     54905,       1323]
+CellTagsIndexPosition[     54862,       1320]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", 
+   RowBox[{"b", ",", "n", ",", "bias", ",", "ex2", ",", "var"}], "]"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Define", " ", "names"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "StringForm", "[", "\"\<Expressions for the Rayleigh noise:\>\"", "]"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Asumptions", " ", "that", " ", "are", " ", "explicitly", " ", 
+    "considered"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"defAssum", " ", ":=", 
+    RowBox[{
+     RowBox[{"Element", "[", 
+      RowBox[{"s", ",", "Reals"}], "]"}], "&&", 
+     RowBox[{"s", ">", "0"}], "&&", 
+     RowBox[{"Element", "[", 
+      RowBox[{"N", ",", "Integers"}], "]"}], "&&", 
+     RowBox[{"N", ">", "0"}], "&&", 
+     RowBox[{"Element", "[", 
+      RowBox[{"x", ",", "Reals"}], "]"}], "&&", 
+     RowBox[{"x", ">", "0"}]}]}], ";"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Rayleigh", " ", "CDF"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"RayleighCDF", "[", "x_", "]"}], ":=", 
+  RowBox[{"Assuming", "[", 
+   RowBox[{"defAssum", ",", 
+    RowBox[{"FullSimplify", "[", 
+     RowBox[{"1", "-", 
+      RowBox[{"Exp", "[", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{"x", "^", "2"}]}], "/", 
+        RowBox[{"(", 
+         RowBox[{"2", "*", 
+          RowBox[{"s", "^", "2"}]}], ")"}]}], "]"}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"StringForm", "[", 
+   RowBox[{"\"\< Parent CDF: '``'\>\"", ",", 
+    RowBox[{"RayleighCDF", "[", "x", "]"}]}], "]"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Rayleigh", " ", "PDF"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"RayleighPDF", "[", "x_", "]"}], ":=", 
+  RowBox[{"Assuming", "[", 
+   RowBox[{"defAssum", ",", 
+    RowBox[{"FullSimplify", "[", 
+     RowBox[{"D", "[", 
+      RowBox[{
+       RowBox[{"RayleighCDF", "[", "x", "]"}], ",", "x"}], "]"}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"StringForm", "[", 
+   RowBox[{"\"\< Parent PDF: '``'\>\"", ",", 
+    RowBox[{"RayleighPDF", "[", "x", "]"}]}], "]"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "minimum", " ", "order", " ", "statistic", " ", "pdf", " ", "of", " ", 
+    "Rayleigh", " ", "noise"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"fmin", "[", "x_", "]"}], ":=", 
+  RowBox[{"Assuming", "[", 
+   RowBox[{"defAssum", ",", 
+    RowBox[{"FullSimplify", "[", 
+     RowBox[{"n", "*", 
+      RowBox[{"RayleighPDF", "[", "x", "]"}], "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          RowBox[{"RayleighCDF", "[", "x", "]"}]}], ")"}], "^", 
+        RowBox[{"(", 
+         RowBox[{"n", "-", "1"}], ")"}]}], ")"}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"StringForm", "[", 
+   RowBox[{"\"\< Minimum order PDF: '``'\>\"", ",", 
+    RowBox[{"fmin", "[", "x", "]"}]}], "]"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"pdf", " ", "of", " ", 
+    RowBox[{"1", "/", 
+     RowBox[{"n", "^", "2"}]}], " ", 
+    RowBox[{"\[Sum]", 
+     RowBox[{"y_i", " ", "Pareto", " ", "noise"}]}]}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "StringForm", "[", 
+   "\"\< Proposed, unbiased, estimator: Min[y] - 1/n^2\[Sum]y\>\"", "]"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "first", " ", "test", " ", "for", " ", "different", " ", "values", " ", 
+     "of", " ", "n", " ", "for", " ", "instance", " ", "from", " ", "1"}], 
+    "-", "4"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  "\"\< Testing diferent values of n to find the generic pdf of 1/(n\[Sqrt]n)\
+\[Sum]y \>\"", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"iid", "[", 
+   RowBox[{"n_", ",", "dist_"}], "]"}], ":=", 
+  RowBox[{"TransformedDistribution", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Sum", "[", 
+      RowBox[{
+       RowBox[{"a", "[", "i", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+     RowBox[{"(", 
+      RowBox[{"n", "^", "2"}], ")"}]}], ",", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"Distributed", "[", 
+       RowBox[{
+        RowBox[{"a", "[", "i", "]"}], ",", "dist"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "n"}], "}"}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"n", ":=", "1"}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dist", ":=", 
+   RowBox[{"RayleighDistribution", "[", "s", "]"}]}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"testPDF", ":=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"PDF", "[", 
+        RowBox[{
+         RowBox[{"iid", "[", 
+          RowBox[{"n", ",", "dist"}], "]"}], ",", "x"}], "]"}], "]"}]}], 
+     "]"}]}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"biasCompensation", ":=", 
+  RowBox[{"Assuming", "[", 
+   RowBox[{"defAssum", ",", 
+    RowBox[{"FullSimplify", "[", 
+     RowBox[{"Expectation", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"n", "^", 
+          RowBox[{"(", 
+           RowBox[{"3", "/", "2"}], ")"}]}], ")"}]}], ",", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"Distributed", "[", 
+          RowBox[{
+           RowBox[{"a", "[", "i", "]"}], ",", 
+           RowBox[{"RayleighDistribution", "[", "s", "]"}]}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "n"}], "}"}]}], "]"}]}], "]"}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{"\"\<           bias = '``'\>\"", ",", "biasCompensation"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"n", ":=", "2"}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dist", ":=", 
+   RowBox[{"RayleighDistribution", "[", "s", "]"}]}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"testPDF", ":=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"Simplify", "[", 
+       RowBox[{"PDF", "[", 
+        RowBox[{
+         RowBox[{"iid", "[", 
+          RowBox[{"n", ",", "dist"}], "]"}], ",", "x"}], "]"}], "]"}]}], 
+     "]"}]}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"biasCompensation", ":=", 
+  RowBox[{"Assuming", "[", 
+   RowBox[{"defAssum", ",", 
+    RowBox[{"Simplify", "[", 
+     RowBox[{"Expectation", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"n", "^", 
+          RowBox[{"(", 
+           RowBox[{"3", "/", "2"}], ")"}]}], ")"}]}], ",", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"Distributed", "[", 
+          RowBox[{
+           RowBox[{"a", "[", "i", "]"}], ",", 
+           RowBox[{"RayleighDistribution", "[", "s", "]"}]}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "n"}], "}"}]}], "]"}]}], "]"}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{"\"\<           bias = '``'\>\"", ",", "biasCompensation"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"n", ":=", "3"}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dist", ":=", 
+   RowBox[{"RayleighDistribution", "[", "s", "]"}]}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"testPDF", ":=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"Simplify", "[", 
+       RowBox[{"PDF", "[", 
+        RowBox[{
+         RowBox[{"iid", "[", 
+          RowBox[{"n", ",", "dist"}], "]"}], ",", "x"}], "]"}], "]"}]}], 
+     "]"}]}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"biasCompensation", ":=", 
+  RowBox[{"Assuming", "[", 
+   RowBox[{"defAssum", ",", 
+    RowBox[{"Simplify", "[", 
+     RowBox[{"Expectation", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"n", "^", 
+          RowBox[{"(", 
+           RowBox[{"3", "/", "2"}], ")"}]}], ")"}]}], ",", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"Distributed", "[", 
+          RowBox[{
+           RowBox[{"a", "[", "i", "]"}], ",", 
+           RowBox[{"RayleighDistribution", "[", "s", "]"}]}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "n"}], "}"}]}], "]"}]}], "]"}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{"\"\<           bias = '``'\>\"", ",", "biasCompensation"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"n", ":=", "4"}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dist", ":=", 
+   RowBox[{"RayleighDistribution", "[", "s", "]"}]}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"testPDF", ":=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"PDF", "[", 
+        RowBox[{
+         RowBox[{"iid", "[", 
+          RowBox[{"n", ",", "dist"}], "]"}], ",", "x"}], "]"}], "]"}]}], 
+     "]"}]}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"biasCompensation", ":=", 
+  RowBox[{"Assuming", "[", 
+   RowBox[{"defAssum", ",", 
+    RowBox[{"Simplify", "[", 
+     RowBox[{"Expectation", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"n", "*", 
+          RowBox[{"Sqrt", "[", "n", "]"}]}], ")"}]}], ",", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"Distributed", "[", 
+          RowBox[{
+           RowBox[{"a", "[", "i", "]"}], ",", 
+           RowBox[{"RayleighDistribution", "[", "s", "]"}]}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "n"}], "}"}]}], "]"}]}], "]"}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"StringForm", "[", 
+   RowBox[{"\"\<           bias = '``'\>\"", ",", "biasCompensation"}], "]"}],
+   "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "The", " ", "generic", " ", "pdf", " ", "of", " ", "the", " ", "summation",
+     " ", "part", " ", "is", " ", "thus", " ", "given", " ", "by"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Clear", "[", "n", "]"}], "\.10", "\[IndentingNewLine]", 
+     RowBox[{"fSum", "[", "x_", "]"}]}], ":=", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Assuming", "[", 
+       RowBox[{"defAssum", ",", 
+        RowBox[{"FullSimplify", "[", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"n", "^", 
+             RowBox[{"(", 
+              RowBox[{"2", "*", "n"}], ")"}]}], "*", 
+            RowBox[{"Exp", "[", 
+             RowBox[{
+              RowBox[{"-", 
+               RowBox[{"(", 
+                RowBox[{"x", "*", 
+                 RowBox[{"n", "^", "2"}]}], ")"}]}], "/", 
+              RowBox[{"(", "b", ")"}]}], "]"}], "*", 
+            RowBox[{"x", "^", 
+             RowBox[{"(", 
+              RowBox[{"n", "-", "1"}], ")"}]}]}], ")"}], "/", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"Factorial", "[", 
+             RowBox[{"n", "-", "1"}], "]"}], "*", 
+            RowBox[{"b", "^", "n"}]}], ")"}]}], "]"}]}], "]"}], 
+      "\[IndentingNewLine]", "biasSum"}], ":=", 
+     RowBox[{
+      RowBox[{"b", "/", "n"}], "\[IndentingNewLine]", 
+      RowBox[{"StringForm", "[", 
+       RowBox[{
+       "\"\< Generic PDF of the summation part: '``',     bias = '``'\>\"", 
+        ",", 
+        RowBox[{"fSum", "[", "x", "]"}], ",", "biasSum"}], "]"}]}]}]}], 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "check", " ", "if", " ", "the", " ", "estimator", " ", "is", " ", 
+    "unbiased"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  "\"\< Bias and variance of the whole estimator Min[y]-1/(n\[Sqrt]n)\[Sum]y \
+for different values of n \>\"", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"n", ":=", "1"}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"bias", ":=", 
+  RowBox[{"Expectation", "[", 
+   RowBox[{
+    RowBox[{"A", "-", 
+     RowBox[{
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{"a", "[", "i", "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+      RowBox[{"(", 
+       RowBox[{"n", "*", 
+        RowBox[{"Sqrt", "[", "n", "]"}]}], ")"}]}]}], ",", 
+    RowBox[{"Append", "[", 
+     RowBox[{
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Distributed", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", "dist"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], ",", 
+      RowBox[{"A", "\[Distributed]", 
+       RowBox[{"RayleighDistribution", "[", 
+        RowBox[{"s", "/", 
+         RowBox[{"Sqrt", "[", "n", "]"}]}], "]"}]}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"ex2", ":=", 
+  RowBox[{"Expectation", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"A", "-", 
+       RowBox[{
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"n", "*", 
+          RowBox[{"Sqrt", "[", "n", "]"}]}], ")"}]}]}], ")"}], "^", "2"}], 
+    ",", 
+    RowBox[{"Append", "[", 
+     RowBox[{
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Distributed", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", "dist"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], ",", 
+      RowBox[{"A", "\[Distributed]", 
+       RowBox[{"RayleighDistribution", "[", 
+        RowBox[{"s", "/", 
+         RowBox[{"Sqrt", "[", "n", "]"}]}], "]"}]}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"var", ":=", 
+  RowBox[{"ex2", "-", 
+   RowBox[{"bias", "^", "2"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{
+  "\"\<           bias = '``', var = '``'\>\"", ",", "bias", ",", "var"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"n", ":=", "2"}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"bias", ":=", 
+  RowBox[{"Expectation", "[", 
+   RowBox[{
+    RowBox[{"A", "-", 
+     RowBox[{
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{"a", "[", "i", "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+      RowBox[{"(", 
+       RowBox[{"n", "*", 
+        RowBox[{"Sqrt", "[", "n", "]"}]}], ")"}]}]}], ",", 
+    RowBox[{"Append", "[", 
+     RowBox[{
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Distributed", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", "dist"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], ",", 
+      RowBox[{"A", "\[Distributed]", 
+       RowBox[{"RayleighDistribution", "[", 
+        RowBox[{"s", "/", 
+         RowBox[{"Sqrt", "[", "n", "]"}]}], "]"}]}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"ex2", ":=", 
+  RowBox[{"Expectation", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"A", "-", 
+       RowBox[{
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"n", "*", 
+          RowBox[{"Sqrt", "[", "n", "]"}]}], ")"}]}]}], ")"}], "^", "2"}], 
+    ",", 
+    RowBox[{"Append", "[", 
+     RowBox[{
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Distributed", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", "dist"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], ",", 
+      RowBox[{"A", "\[Distributed]", 
+       RowBox[{"RayleighDistribution", "[", 
+        RowBox[{"s", "/", 
+         RowBox[{"Sqrt", "[", "n", "]"}]}], "]"}]}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"var", ":=", 
+  RowBox[{"ex2", "-", 
+   RowBox[{"bias", "^", "2"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{
+  "\"\<           bias = '``', var = '``'\>\"", ",", "bias", ",", "var"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"n", ":=", "3"}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"bias", ":=", 
+  RowBox[{"Expectation", "[", 
+   RowBox[{
+    RowBox[{"A", "-", 
+     RowBox[{
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{"a", "[", "i", "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+      RowBox[{"(", 
+       RowBox[{"n", "*", 
+        RowBox[{"Sqrt", "[", "n", "]"}]}], ")"}]}]}], ",", 
+    RowBox[{"Append", "[", 
+     RowBox[{
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Distributed", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", "dist"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], ",", 
+      RowBox[{"A", "\[Distributed]", 
+       RowBox[{"RayleighDistribution", "[", 
+        RowBox[{"s", "/", 
+         RowBox[{"Sqrt", "[", "n", "]"}]}], "]"}]}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"ex2", ":=", 
+  RowBox[{"Expectation", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"A", "-", 
+       RowBox[{
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"n", "*", 
+          RowBox[{"Sqrt", "[", "n", "]"}]}], ")"}]}]}], ")"}], "^", "2"}], 
+    ",", 
+    RowBox[{"Append", "[", 
+     RowBox[{
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Distributed", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", "dist"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], ",", 
+      RowBox[{"A", "\[Distributed]", 
+       RowBox[{"RayleighDistribution", "[", 
+        RowBox[{"s", "/", 
+         RowBox[{"Sqrt", "[", "n", "]"}]}], "]"}]}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"var", ":=", 
+  RowBox[{"ex2", "-", 
+   RowBox[{"bias", "^", "2"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{
+  "\"\<           bias = '``', var = '``'\>\"", ",", "bias", ",", "var"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"n", ":=", "4"}], "\[IndentingNewLine]", 
+ RowBox[{"StringForm", "[", 
+  RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"bias", ":=", 
+  RowBox[{"Expectation", "[", 
+   RowBox[{
+    RowBox[{"A", "-", 
+     RowBox[{
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{"a", "[", "i", "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+      RowBox[{"(", 
+       RowBox[{"n", "*", 
+        RowBox[{"Sqrt", "[", "n", "]"}]}], ")"}]}]}], ",", 
+    RowBox[{"Append", "[", 
+     RowBox[{
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Distributed", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", "dist"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], ",", 
+      RowBox[{"A", "\[Distributed]", 
+       RowBox[{"RayleighDistribution", "[", 
+        RowBox[{"s", "/", 
+         RowBox[{"Sqrt", "[", "n", "]"}]}], "]"}]}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"ex2", ":=", 
+  RowBox[{"Expectation", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"A", "-", 
+       RowBox[{
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"n", "*", 
+          RowBox[{"Sqrt", "[", "n", "]"}]}], ")"}]}]}], ")"}], "^", "2"}], 
+    ",", 
+    RowBox[{"Append", "[", 
+     RowBox[{
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Distributed", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "i", "]"}], ",", "dist"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "n"}], "}"}]}], "]"}], ",", 
+      RowBox[{"A", "\[Distributed]", 
+       RowBox[{"RayleighDistribution", "[", 
+        RowBox[{"s", "/", 
+         RowBox[{"Sqrt", "[", "n", "]"}]}], "]"}]}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"var", ":=", 
+  RowBox[{"ex2", "-", 
+   RowBox[{"bias", "^", "2"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"StringForm", "[", 
+   RowBox[{
+   "\"\<           bias = '``', var = '``'\>\"", ",", "bias", ",", "var"}], 
+   "]"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Generic", " ", "form", " ", "of", " ", "variance", " ", "for", " ", "the",
+     " ", "whole", " ", "estimator"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Clear", "[", 
+   RowBox[{"b", ",", "n"}], "]"}], "\.10"}], "\[IndentingNewLine]", 
+ RowBox[{"varGeneric", ":=", " ", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"n", "+", "1"}], ")"}], "*", 
+   RowBox[{"(", 
+    RowBox[{"4", "-", "Pi"}], ")"}], "*", 
+   RowBox[{
+    RowBox[{"S", "^", "2"}], "/", 
+    RowBox[{"(", 
+     RowBox[{"2", " ", 
+      RowBox[{"n", "^", "2"}]}], ")"}]}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"StringForm", "[", 
+   RowBox[{
+   "\"\< The unbiased estimator Min[y]-1/(n\[Sqrt]n)\[Sum]y has a variance of \
+: '``'\>\"", " ", ",", "varGeneric"}], "]"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "A", " ", "try", " ", "to", " ", "find", " ", "the", " ", "generic", " ", 
+     "PDF", " ", "for", " ", "the", " ", "whole", " ", "estimator"}], ",", 
+    " ", 
+    RowBox[{"not", " ", "necessary", " ", "though"}]}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+     "StringForm", "[", 
+      "\"\< Testing diferent values of n to find the generic pdf of the whole \
+estimator Min[y]-1/n^2\[Sum]y \>\"", "]"}], "\[IndentingNewLine]", 
+     RowBox[{"iid", "[", 
+      RowBox[{"n_", ",", "dist_"}], "]"}]}], ":=", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"TransformedDistribution", "[", 
+       RowBox[{
+        RowBox[{"A", "-", 
+         RowBox[{
+          RowBox[{"Sum", "[", 
+           RowBox[{
+            RowBox[{"a", "[", "i", "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+          RowBox[{"(", 
+           RowBox[{"n", "^", "2"}], ")"}]}]}], ",", 
+        RowBox[{"Append", "[", 
+         RowBox[{
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"Distributed", "[", 
+             RowBox[{
+              RowBox[{"a", "[", "i", "]"}], ",", "dist"}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "n"}], "}"}]}], "]"}], ",", 
+          RowBox[{"A", "\[Distributed]", 
+           RowBox[{"ExponentialDistribution", "[", 
+            RowBox[{"n", "/", "b"}], "]"}]}]}], "]"}]}], "]"}], 
+      "\[IndentingNewLine]", "n"}], ":=", 
+     RowBox[{
+      RowBox[{"1", "\[IndentingNewLine]", 
+       RowBox[{"StringForm", "[", 
+        RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], 
+       "\[IndentingNewLine]", "dist"}], ":=", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"ExponentialDistribution", "[", 
+         RowBox[{"1", "/", "b"}], "]"}], "\[IndentingNewLine]", 
+        "testGeneric"}], ":=", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"PDF", "[", 
+          RowBox[{
+           RowBox[{"iid", "[", 
+            RowBox[{"n", ",", "dist"}], "]"}], ",", "x"}], "]"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{"StringForm", "[", 
+          RowBox[{"\"\<           PDF = '``'\>\"", ",", "testGeneric"}], 
+          "]"}], "\[IndentingNewLine]", "n"}], ":=", 
+        RowBox[{
+         RowBox[{"2", "\[IndentingNewLine]", 
+          RowBox[{"StringForm", "[", 
+           RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], 
+          "\[IndentingNewLine]", "dist"}], ":=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"ExponentialDistribution", "[", 
+            RowBox[{"1", "/", "b"}], "]"}], "\[IndentingNewLine]", 
+           "testGeneric"}], ":=", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"PDF", "[", 
+             RowBox[{
+              RowBox[{"iid", "[", 
+               RowBox[{"n", ",", "dist"}], "]"}], ",", "x"}], "]"}], 
+            "\[IndentingNewLine]", 
+            RowBox[{"StringForm", "[", 
+             RowBox[{"\"\<           PDF = '``'\>\"", ",", "testGeneric"}], 
+             "]"}], "\[IndentingNewLine]", "n"}], ":=", 
+           RowBox[{
+            RowBox[{"3", "\[IndentingNewLine]", 
+             RowBox[{"StringForm", "[", 
+              RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], 
+             "\[IndentingNewLine]", "dist"}], ":=", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"ExponentialDistribution", "[", 
+               RowBox[{"1", "/", "b"}], "]"}], "\[IndentingNewLine]", 
+              "testGeneric"}], ":=", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"PDF", "[", 
+                RowBox[{
+                 RowBox[{"iid", "[", 
+                  RowBox[{"n", ",", "dist"}], "]"}], ",", "x"}], "]"}], 
+               "\[IndentingNewLine]", 
+               RowBox[{"StringForm", "[", 
+                RowBox[{"\"\<           PDF = '``'\>\"", ",", "testGeneric"}],
+                 "]"}], "\[IndentingNewLine]", "n"}], ":=", 
+              RowBox[{
+               RowBox[{"4", "\[IndentingNewLine]", 
+                RowBox[{"StringForm", "[", 
+                 RowBox[{"\"\< N = '``' :\>\"", ",", "n"}], "]"}], 
+                "\[IndentingNewLine]", "dist"}], ":=", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"ExponentialDistribution", "[", 
+                  RowBox[{"1", "/", "b"}], "]"}], "\[IndentingNewLine]", 
+                 "testGeneric"}], ":=", 
+                RowBox[{
+                 RowBox[{"PDF", "[", 
+                  RowBox[{
+                   RowBox[{"iid", "[", 
+                    RowBox[{"n", ",", "dist"}], "]"}], ",", "x"}], "]"}], 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"StringForm", "[", 
+                  RowBox[{
+                  "\"\<           PDF = '``'\>\"", ",", "testGeneric"}], 
+                  "]"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], "*)"}]}]}], "Input",
+ CellChangeTimes->{{3.745653547867074*^9, 3.745653606256714*^9}, {
+   3.745653684885211*^9, 3.745653882962134*^9}, {3.7456540292368107`*^9, 
+   3.745654292818203*^9}, {3.745654385927169*^9, 3.745654389580297*^9}, {
+   3.745654449361125*^9, 3.74565451935005*^9}, {3.745654555362727*^9, 
+   3.745654559297226*^9}, {3.745654749390772*^9, 3.745654790909074*^9}, {
+   3.745654863403701*^9, 3.745654910561605*^9}, {3.7456549428959093`*^9, 
+   3.745654958701181*^9}, {3.745654991679921*^9, 3.745655025336009*^9}, {
+   3.7456550632583017`*^9, 3.745655204766829*^9}, 3.7456552754992323`*^9, {
+   3.7456553844715433`*^9, 3.74565538490497*^9}, {3.745655495862191*^9, 
+   3.745655504998354*^9}, {3.745655689535962*^9, 
+   3.745655768563036*^9}},ExpressionUUID->"f3992fec-d504-458d-be3f-\
+440dda15343a"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Expressions for the Rayleigh noise:\"\>",
+  StringForm["Expressions for the Rayleigh noise:"],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770123247*^9}},ExpressionUUID->"7e60a33c-2842-4dc6-beb0-\
+313fcbca388d"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" Parent CDF: '\\!\\(\\*RowBox[{\\\"1\\\", \\\"-\\\", \
+SuperscriptBox[\\\"\[ExponentialE]\\\", RowBox[{\\\"-\\\", \
+FractionBox[SuperscriptBox[\\\"x\\\", \\\"2\\\"], RowBox[{\\\"2\\\", \\\" \
+\\\", SuperscriptBox[\\\"s\\\", \\\"2\\\"]}]]}]]}]\\)'\"\>",
+  StringForm[
+  " Parent CDF: '``'", 1 - 
+   E^(Rational[-1, 2] $CellContext`s^(-2) $CellContext`x^2)],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770129355*^9}},ExpressionUUID->"5248fca4-395b-48b8-a061-\
+cb739f0a7414"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" Parent PDF: \
+'\\!\\(\\*FractionBox[RowBox[{SuperscriptBox[\\\"\[ExponentialE]\\\", \
+RowBox[{\\\"-\\\", FractionBox[SuperscriptBox[\\\"x\\\", \\\"2\\\"], RowBox[{\
+\\\"2\\\", \\\" \\\", SuperscriptBox[\\\"s\\\", \\\"2\\\"]}]]}]], \\\" \\\", \
+\\\"x\\\"}], SuperscriptBox[\\\"s\\\", \\\"2\\\"]]\\)'\"\>",
+  StringForm[
+  " Parent PDF: '``'", 
+   E^(Rational[-1, 
+       2] $CellContext`s^(-2) $CellContext`x^2) $CellContext`s^(-2) \
+$CellContext`x],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770134308*^9}},ExpressionUUID->"acd979d5-468d-4449-9d55-\
+e3ea9d145962"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" Minimum order PDF: \
+'\\!\\(\\*FractionBox[RowBox[{SuperscriptBox[\\\"\[ExponentialE]\\\", \
+RowBox[{\\\"-\\\", FractionBox[RowBox[{\\\"n\\\", \\\" \\\", \
+SuperscriptBox[\\\"x\\\", \\\"2\\\"]}], RowBox[{\\\"2\\\", \\\" \\\", \
+SuperscriptBox[\\\"s\\\", \\\"2\\\"]}]]}]], \\\" \\\", \\\"n\\\", \\\" \\\", \
+\\\"x\\\"}], SuperscriptBox[\\\"s\\\", \\\"2\\\"]]\\)'\"\>",
+  StringForm[
+  " Minimum order PDF: '``'", 
+   E^(Rational[-1, 
+       2] $CellContext`n $CellContext`s^(-2) $CellContext`x^2) $CellContext`n \
+$CellContext`s^(-2) $CellContext`x],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770139516*^9}},ExpressionUUID->"7184ab1b-4501-4905-ad64-\
+0bf8541b704d"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" Proposed, unbiased, estimator: Min[y] - 1/n^2\[Sum]y\
+\"\>",
+  StringForm[" Proposed, unbiased, estimator: Min[y] - 1/n^2\[Sum]y"],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770144661*^9}},ExpressionUUID->"d30ca8eb-c02b-4ed5-b924-\
+25d53573a2df"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" Testing diferent values of n to find the generic pdf \
+of 1/(n\[Sqrt]n)\[Sum]y \"\>",
+  StringForm[
+  " Testing diferent values of n to find the generic pdf of 1/(n\[Sqrt]n)\
+\[Sum]y "],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770149515*^9}},ExpressionUUID->"481cb13e-e09d-4fca-95ad-\
+9c5cef73fb0c"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" N = '\\!\\(\\*RowBox[{\\\"1\\\"}]\\)' :\"\>",
+  StringForm[" N = '``' :", 1],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770154278*^9}},ExpressionUUID->"5542ffc2-a7d2-4c89-b8ef-\
+29d736c3dd7f"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"           bias = \
+'\\!\\(\\*RowBox[{SqrtBox[FractionBox[\\\"\[Pi]\\\", \\\"2\\\"]], \\\" \\\", \
+\\\"s\\\"}]\\)'\"\>",
+  StringForm[
+  "           bias = '``'", (Rational[1, 2] Pi)^Rational[1, 2] $CellContext`s],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770159059*^9}},ExpressionUUID->"e8a78408-bab0-4a68-8970-\
+8936cbacdf1e"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" N = '\\!\\(\\*RowBox[{\\\"2\\\"}]\\)' :\"\>",
+  StringForm[" N = '``' :", 2],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770164064*^9}},ExpressionUUID->"9c616f92-4d0f-48b8-942f-\
+8190a3707769"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"           bias = \
+'\\!\\(\\*FractionBox[RowBox[{SqrtBox[\\\"\[Pi]\\\"], \\\" \\\", \\\"s\\\"}], \
+\\\"2\\\"]\\)'\"\>",
+  StringForm[
+  "           bias = '``'", Rational[1, 2] Pi^Rational[1, 2] $CellContext`s],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.7456557701688747`*^9}},ExpressionUUID->"14665e5d-dc98-472a-8daf-\
+7cd0edb67828"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" N = '\\!\\(\\*RowBox[{\\\"3\\\"}]\\)' :\"\>",
+  StringForm[" N = '``' :", 3],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770173753*^9}},ExpressionUUID->"392220df-8ca6-45e2-ae56-\
+27a64f313c82"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"           bias = \
+'\\!\\(\\*RowBox[{SqrtBox[FractionBox[\\\"\[Pi]\\\", \\\"6\\\"]], \\\" \\\", \
+\\\"s\\\"}]\\)'\"\>",
+  StringForm[
+  "           bias = '``'", (Rational[1, 6] Pi)^Rational[1, 2] $CellContext`s],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.7456557701785383`*^9}},ExpressionUUID->"ed3511b7-16cc-4a15-b1b3-\
+00bd4a27c163"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" N = '\\!\\(\\*RowBox[{\\\"4\\\"}]\\)' :\"\>",
+  StringForm[" N = '``' :", 4],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.7456557701833477`*^9}},ExpressionUUID->"b8613c0c-39a0-4704-bf59-\
+b73044a07e24"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"           bias = '\\!\\(\\*RowBox[{FractionBox[\\\"1\
+\\\", \\\"2\\\"], \\\" \\\", SqrtBox[FractionBox[\\\"\[Pi]\\\", \\\"2\\\"]], \
+\\\" \\\", \\\"s\\\"}]\\)'\"\>",
+  StringForm[
+  "           bias = '``'", 
+   Rational[1, 2] (Rational[1, 2] Pi)^Rational[1, 2] $CellContext`s],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770189061*^9}},ExpressionUUID->"6bfef14b-54b0-4c72-840c-\
+8649233d738c"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" Bias and variance of the whole estimator Min[y]-1/(n\
+\[Sqrt]n)\[Sum]y for different values of n \"\>",
+  StringForm[
+  " Bias and variance of the whole estimator Min[y]-1/(n\[Sqrt]n)\[Sum]y for \
+different values of n "],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770192965*^9}},ExpressionUUID->"a3a38e56-60e9-4550-a47d-\
+93f4771f92c2"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" N = '\\!\\(\\*RowBox[{\\\"1\\\"}]\\)' :\"\>",
+  StringForm[" N = '``' :", 1],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770196548*^9}},ExpressionUUID->"367985cf-6080-4d8b-92b3-\
+717e9ab8b72a"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"           bias = '\\!\\(\\*RowBox[{\\\"0\\\"}]\\)', \
+var = '\\!\\(\\*RowBox[{RowBox[{\\\"-\\\", RowBox[{\\\"(\\\", \
+RowBox[{RowBox[{\\\"-\\\", \\\"4\\\"}], \\\"+\\\", \\\"\[Pi]\\\"}], \
+\\\")\\\"}]}], \\\" \\\", SuperscriptBox[\\\"s\\\", \\\"2\\\"]}]\\)'\"\>",
+  StringForm[
+  "           bias = '``', var = '``'", 0, -(-4 + Pi) $CellContext`s^2],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770199936*^9}},ExpressionUUID->"64cafc9e-e984-4b74-9fdf-\
+21bb3c848197"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" N = '\\!\\(\\*RowBox[{\\\"2\\\"}]\\)' :\"\>",
+  StringForm[" N = '``' :", 2],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770203582*^9}},ExpressionUUID->"e66a88ee-8c8b-4e94-bb78-\
+8648f164dea4"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"           bias = '\\!\\(\\*RowBox[{\\\"0\\\"}]\\)', \
+var = '\\!\\(\\*RowBox[{RowBox[{\\\"-\\\", FractionBox[\\\"3\\\", \
+\\\"8\\\"]}], \\\" \\\", RowBox[{\\\"(\\\", \
+RowBox[{RowBox[{RowBox[{\\\"-\\\", \\\"4\\\"}], \\\" \\\", \
+SuperscriptBox[\\\"s\\\", \\\"2\\\"]}], \\\"+\\\", RowBox[{\\\"\[Pi]\\\", \
+\\\" \\\", SuperscriptBox[\\\"s\\\", \\\"2\\\"]}]}], \\\")\\\"}]}]\\)'\"\>",
+  StringForm[
+  "           bias = '``', var = '``'", 0, 
+   Rational[-3, 8] ((-4) $CellContext`s^2 + Pi $CellContext`s^2)],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770206934*^9}},ExpressionUUID->"ac51d156-9a02-42d2-b6b2-\
+bcb275bae39d"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" N = '\\!\\(\\*RowBox[{\\\"3\\\"}]\\)' :\"\>",
+  StringForm[" N = '``' :", 3],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770210607*^9}},ExpressionUUID->"3521c7f2-bf4c-43b9-af1a-\
+236297d3c763"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"           bias = '\\!\\(\\*RowBox[{\\\"0\\\"}]\\)', \
+var = '\\!\\(\\*RowBox[{RowBox[{\\\"-\\\", FractionBox[\\\"2\\\", \
+\\\"9\\\"]}], \\\" \\\", RowBox[{\\\"(\\\", \
+RowBox[{RowBox[{RowBox[{\\\"-\\\", \\\"4\\\"}], \\\" \\\", \
+SuperscriptBox[\\\"s\\\", \\\"2\\\"]}], \\\"+\\\", RowBox[{\\\"\[Pi]\\\", \
+\\\" \\\", SuperscriptBox[\\\"s\\\", \\\"2\\\"]}]}], \\\")\\\"}]}]\\)'\"\>",
+  StringForm[
+  "           bias = '``', var = '``'", 0, 
+   Rational[-2, 9] ((-4) $CellContext`s^2 + Pi $CellContext`s^2)],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770214069*^9}},ExpressionUUID->"c5cbdde5-9dbf-4b4b-8297-\
+1172ee68301a"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" N = '\\!\\(\\*RowBox[{\\\"4\\\"}]\\)' :\"\>",
+  StringForm[" N = '``' :", 4],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.7456557702178802`*^9}},ExpressionUUID->"c9540676-a61f-412a-9596-\
+f334c69d7853"],
+
+Cell[BoxData[
+ InterpretationBox["\<\"           bias = '\\!\\(\\*RowBox[{\\\"0\\\"}]\\)', \
+var = '\\!\\(\\*RowBox[{RowBox[{\\\"-\\\", FractionBox[\\\"5\\\", \
+\\\"32\\\"]}], \\\" \\\", RowBox[{\\\"(\\\", \
+RowBox[{RowBox[{RowBox[{\\\"-\\\", \\\"4\\\"}], \\\" \\\", \
+SuperscriptBox[\\\"s\\\", \\\"2\\\"]}], \\\"+\\\", RowBox[{\\\"\[Pi]\\\", \
+\\\" \\\", SuperscriptBox[\\\"s\\\", \\\"2\\\"]}]}], \\\")\\\"}]}]\\)'\"\>",
+  StringForm[
+  "           bias = '``', var = '``'", 0, 
+   Rational[-5, 32] ((-4) $CellContext`s^2 + Pi $CellContext`s^2)],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770221156*^9}},ExpressionUUID->"689d201e-c316-4e44-9ace-\
+d344a049e6b7"],
+
+Cell[BoxData[
+ RowBox[{"\.10", " ", "Null"}]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770224868*^9}},ExpressionUUID->"e9e8a669-6c3e-4eda-a1d3-\
+10bfdb6d2f4e"],
+
+Cell[BoxData[
+ InterpretationBox["\<\" The unbiased estimator Min[y]-1/(n\[Sqrt]n)\[Sum]y \
+has a variance of : '\\!\\(\\*FractionBox[RowBox[{RowBox[{\\\"(\\\", RowBox[{\
+\\\"1\\\", \\\"+\\\", \\\"n\\\"}], \\\")\\\"}], \\\" \\\", RowBox[{\\\"(\\\", \
+RowBox[{\\\"4\\\", \\\"-\\\", \\\"\[Pi]\\\"}], \\\")\\\"}], \\\" \\\", \
+SuperscriptBox[\\\"S\\\", \\\"2\\\"]}], RowBox[{\\\"2\\\", \\\" \\\", \
+SuperscriptBox[\\\"n\\\", \\\"2\\\"]}]]\\)'\"\>",
+  StringForm[
+  " The unbiased estimator Min[y]-1/(n\[Sqrt]n)\[Sum]y has a variance of : \
+'``'", Rational[1, 2] $CellContext`n^(-2) (1 + $CellContext`n) (4 - 
+    Pi) $CellContext`S^2],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.745653819254385*^9, {3.745653870298473*^9, 3.7456538851400557`*^9}, 
+   3.745654037183558*^9, {3.745654088572936*^9, 3.745654111122559*^9}, 
+   3.745654148716158*^9, {3.7456542455789423`*^9, 3.745654294709094*^9}, 
+   3.745654391989258*^9, {3.745654451668631*^9, 3.745654521807777*^9}, 
+   3.745654561282446*^9, {3.7456547673132753`*^9, 3.745654793396462*^9}, {
+   3.7456548891142073`*^9, 3.7456549131844683`*^9}, 3.745654961438299*^9, {
+   3.745655001064715*^9, 3.745655028152234*^9}, 3.745655236969502*^9, 
+   3.7456552773784323`*^9, 3.745655386613306*^9, 3.745655506790951*^9, {
+   3.745655752039432*^9, 
+   3.745655770228238*^9}},ExpressionUUID->"97510e0c-985c-4f4f-b200-\
+1a89c7bda462"]
+}, Open  ]]
+},
+WindowSize->{Full, Full},
+WindowMargins->{{36, Automatic}, {Automatic, 84}},
+FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 28251, 784, 2203, "Input",ExpressionUUID->"f3992fec-d504-458d-be3f-440dda15343a"],
+Cell[28834, 808, 879, 15, 34, "Output",ExpressionUUID->"7e60a33c-2842-4dc6-beb0-313fcbca388d"],
+Cell[29716, 825, 1141, 20, 49, "Output",ExpressionUUID->"5248fca4-395b-48b8-a061-cb739f0a7414"],
+Cell[30860, 847, 1235, 23, 70, "Output",ExpressionUUID->"acd979d5-468d-4449-9d55-e3ea9d145962"],
+Cell[32098, 872, 1335, 24, 70, "Output",ExpressionUUID->"7184ab1b-4501-4905-ad64-0bf8541b704d"],
+Cell[33436, 898, 917, 16, 34, "Output",ExpressionUUID->"d30ca8eb-c02b-4ed5-b924-25d53573a2df"],
+Cell[34356, 916, 972, 18, 40, "Output",ExpressionUUID->"481cb13e-e09d-4fca-95ad-9c5cef73fb0c"],
+Cell[35331, 936, 863, 15, 34, "Output",ExpressionUUID->"5542ffc2-a7d2-4c89-b8ef-29d736c3dd7f"],
+Cell[36197, 953, 999, 18, 58, "Output",ExpressionUUID->"e8a78408-bab0-4a68-8970-8936cbacdf1e"],
+Cell[37199, 973, 863, 15, 34, "Output",ExpressionUUID->"9c616f92-4d0f-48b8-942f-8190a3707769"],
+Cell[38065, 990, 999, 18, 54, "Output",ExpressionUUID->"14665e5d-dc98-472a-8daf-7cd0edb67828"],
+Cell[39067, 1010, 863, 15, 34, "Output",ExpressionUUID->"392220df-8ca6-45e2-ae56-27a64f313c82"],
+Cell[39933, 1027, 1001, 18, 58, "Output",ExpressionUUID->"ed3511b7-16cc-4a15-b1b3-00bd4a27c163"],
+Cell[40937, 1047, 865, 15, 34, "Output",ExpressionUUID->"b8613c0c-39a0-4704-bf59-b73044a07e24"],
+Cell[41805, 1064, 1064, 19, 58, "Output",ExpressionUUID->"6bfef14b-54b0-4c72-840c-8649233d738c"],
+Cell[42872, 1085, 1008, 18, 40, "Output",ExpressionUUID->"a3a38e56-60e9-4550-a47d-93f4771f92c2"],
+Cell[43883, 1105, 863, 15, 34, "Output",ExpressionUUID->"367985cf-6080-4d8b-92b3-717e9ab8b72a"],
+Cell[44749, 1122, 1135, 19, 34, "Output",ExpressionUUID->"64cafc9e-e984-4b74-9fdf-21bb3c848197"],
+Cell[45887, 1143, 863, 15, 34, "Output",ExpressionUUID->"e66a88ee-8c8b-4e94-bb78-8648f164dea4"],
+Cell[46753, 1160, 1292, 22, 51, "Output",ExpressionUUID->"ac51d156-9a02-42d2-b6b2-bcb275bae39d"],
+Cell[48048, 1184, 863, 15, 34, "Output",ExpressionUUID->"3521c7f2-bf4c-43b9-af1a-236297d3c763"],
+Cell[48914, 1201, 1292, 22, 51, "Output",ExpressionUUID->"c5cbdde5-9dbf-4b4b-8297-1172ee68301a"],
+Cell[50209, 1225, 865, 15, 34, "Output",ExpressionUUID->"c9540676-a61f-412a-9596-f334c69d7853"],
+Cell[51077, 1242, 1294, 22, 51, "Output",ExpressionUUID->"689d201e-c316-4e44-9ace-d344a049e6b7"],
+Cell[52374, 1266, 772, 13, 34, "Output",ExpressionUUID->"e9e8a669-6c3e-4eda-a1d3-10bfdb6d2f4e"],
+Cell[53149, 1281, 1379, 23, 54, "Output",ExpressionUUID->"97510e0c-985c-4f4f-b200-1a89c7bda462"]
+}, Open  ]]
+}
+]
+*)
+

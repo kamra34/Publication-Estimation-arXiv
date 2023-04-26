@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2019)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: Exploring-positive-noise-in-estimation-theory.aux
+The style file: unsrtnat.bst
+Database file #1: Exploring-positive-noise-in-estimation-theory.bib
+You've used 26 entries,
+            2481 wiz_defined-function locations,
+            732 strings with 9125 characters,
+and the built_in function-call counts, 9864 in all, are:
+= -- 835
+> -- 412
+< -- 21
++ -- 168
+- -- 116
+* -- 750
+:= -- 1517
+add.period$ -- 78
+call.type$ -- 26
+change.case$ -- 45
+chr.to.int$ -- 26
+cite$ -- 26
+duplicate$ -- 534
+empty$ -- 973
+format.name$ -- 164
+if$ -- 2162
+int.to.chr$ -- 1
+int.to.str$ -- 27
+missing$ -- 33
+newline$ -- 138
+num.names$ -- 78
+pop$ -- 231
+preamble$ -- 1
+purify$ -- 26
+quote$ -- 0
+skip$ -- 307
+stack$ -- 0
+substring$ -- 491
+swap$ -- 98
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 161
+warning$ -- 0
+while$ -- 74
+width$ -- 0
+write$ -- 342

@@ -1,0 +1,327 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     12300,        319]
+NotebookOptionsPosition[     11576,        299]
+NotebookOutlinePosition[     11930,        315]
+CellTagsIndexPosition[     11887,        312]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{"defAssum", " ", ":=", 
+  RowBox[{
+   RowBox[{"Element", "[", 
+    RowBox[{"b", ",", "Reals"}], "]"}], "&&", 
+   RowBox[{"b", ">", "0"}], "&&", 
+   RowBox[{"Element", "[", 
+    RowBox[{"\[Alpha]", ",", "Reals"}], "]"}], "&&", 
+   RowBox[{"\[Alpha]", "\[GreaterEqual]", "0"}], "&&", 
+   RowBox[{"\[Alpha]", "\[LessEqual]", "1"}], "&&", 
+   RowBox[{"Element", "[", 
+    RowBox[{"x", ",", "Reals"}], "]"}], "&&", 
+   RowBox[{"Element", "[", 
+    RowBox[{"\[Sigma]", ",", "Reals"}], "]"}], "&&", 
+   RowBox[{"\[Sigma]", ">", "0"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"denY", " ", ":=", " ", 
+  RowBox[{"TransformedDistribution", "[", 
+   RowBox[{
+    RowBox[{"x", "+", "e"}], ",", 
+    RowBox[{"e", "\[Distributed]", 
+     RowBox[{"MixtureDistribution", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"\[Alpha]", ",", 
+         RowBox[{"1", "-", "\[Alpha]"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"NormalDistribution", "[", 
+          RowBox[{"0", ",", "\[Sigma]"}], "]"}], ",", 
+         RowBox[{"UniformDistribution", "[", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", "b"}], "}"}], "]"}]}], "}"}]}], "]"}]}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"denMinOrder", ":=", 
+   RowBox[{"OrderDistribution", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"denY", ",", "n"}], "}"}], ",", "1"}], "]"}]}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"BLUE", " ", 
+    RowBox[{"estimator", ":", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"1", "/", "n"}], 
+       RowBox[{"\[Sum]", "y"}]}], " ", "-", " ", 
+      RowBox[{"b", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"1", "-", "\[Alpha]"}], ")"}], "/", "2"}]}]}]}]}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Assuming", "[", 
+  RowBox[{"defAssum", ",", 
+   RowBox[{"FullSimplify", "[", 
+    RowBox[{"Expectation", "[", 
+     RowBox[{"u", ",", 
+      RowBox[{"u", "\[Distributed]", "denY"}]}], "]"}], "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"iid", "[", 
+   RowBox[{"n_", ",", "dist_"}], "]"}], ":=", 
+  RowBox[{"TransformedDistribution", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Sum", "[", 
+      RowBox[{
+       RowBox[{"a", "[", "i", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "n"}], "}"}]}], "]"}], "/", 
+     RowBox[{"(", "n", ")"}]}], ",", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"Distributed", "[", 
+       RowBox[{
+        RowBox[{"a", "[", "i", "]"}], ",", "dist"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "n"}], "}"}]}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"num", ":=", "3"}], "\[IndentingNewLine]", 
+ RowBox[{"estimator", " ", "=", " ", 
+  RowBox[{"Assuming", "[", 
+   RowBox[{"defAssum", ",", 
+    RowBox[{"FullSimplify", "[", 
+     RowBox[{"Expectation", "[", 
+      RowBox[{
+       RowBox[{"u", "-", 
+        RowBox[{"(", 
+         RowBox[{"b", "*", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"1", "-", "\[Alpha]"}], ")"}], "/", "2"}]}], ")"}]}], ",", 
+       RowBox[{"u", "\[Distributed]", 
+        RowBox[{"iid", "[", 
+         RowBox[{"num", ",", "denY"}], "]"}]}]}], "]"}], "]"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"estDist", " ", ":=", " ", 
+  RowBox[{"TransformedDistribution", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"u", "-", 
+      RowBox[{"(", 
+       RowBox[{"b", "*", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"1", "-", "\[Alpha]"}], ")"}], "/", "2"}]}], ")"}]}], "}"}],
+     ",", 
+    RowBox[{"{", 
+     RowBox[{"u", "\[Distributed]", 
+      RowBox[{"iid", "[", 
+       RowBox[{"num", ",", "denY"}], "]"}]}], "}"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Assuming", "[", 
+   RowBox[{"defAssum", ",", 
+    RowBox[{"Refine", "[", 
+     RowBox[{"Variance", "[", "estDist", "]"}], "]"}]}], "]"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Minimum", " ", "order", " ", "statistics", " ", "estimator"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"defAssumTwo", " ", ":=", 
+  RowBox[{
+   RowBox[{"Element", "[", 
+    RowBox[{"b", ",", "Reals"}], "]"}], "&&", 
+   RowBox[{"b", ">", "0"}], "&&", 
+   RowBox[{"Element", "[", 
+    RowBox[{"\[Alpha]", ",", "Reals"}], "]"}], "&&", 
+   RowBox[{"\[Alpha]", "\[GreaterEqual]", "0"}], "&&", 
+   RowBox[{"\[Alpha]", "\[LessEqual]", "1"}], "&&", 
+   RowBox[{"Element", "[", 
+    RowBox[{"x", ",", "Reals"}], "]"}], "&&", 
+   RowBox[{"Element", "[", 
+    RowBox[{"\[Sigma]", ",", "Reals"}], "]"}], "&&", 
+   RowBox[{"\[Sigma]", ">", "0"}], "&&", 
+   RowBox[{"Element", "[", 
+    RowBox[{"y", ",", "Reals"}], "]"}], "&&", 
+   RowBox[{"y", "<", 
+    RowBox[{"x", "+", "b"}]}], "&&", 
+   RowBox[{"y", "\[GreaterEqual]", "x"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"denOrder", ":=", 
+  RowBox[{"OrderDistribution", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"denY", ",", "n"}], "}"}], ",", 
+    RowBox[{
+     RowBox[{"Floor", "[", 
+      RowBox[{"N", "*", 
+       RowBox[{"\[Alpha]", "/", "2"}]}], "]"}], "+", "1"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Assuming", "[", 
+   RowBox[{"defAssumTwo", ",", 
+    RowBox[{"FullSimplify", "[", 
+     RowBox[{"Expectation", "[", 
+      RowBox[{"y", ",", 
+       RowBox[{"y", "\[Distributed]", "denOrder"}]}], "]"}], "]"}]}], "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{
+  3.7626683953166513`*^9, {3.762668451228654*^9, 3.762668550344099*^9}, {
+   3.7626685970873013`*^9, 3.76266869580591*^9}, {3.7626687498932953`*^9, 
+   3.7626687941456633`*^9}, {3.7626688419950647`*^9, 3.762668864285445*^9}, {
+   3.762668957062228*^9, 3.762669052734001*^9}, {3.762669203589479*^9, 
+   3.76266943672665*^9}, 3.762669631988146*^9, 3.762669664610278*^9, {
+   3.7626705361450863`*^9, 3.7626707645300903`*^9}, {3.762670853895646*^9, 
+   3.762670892956161*^9}, {3.762671113482514*^9, 3.762671222088729*^9}, {
+   3.762671267206622*^9, 3.762671386737432*^9}, {3.762671461632196*^9, 
+   3.7626714784692574`*^9}, {3.762671883839992*^9, 3.762672014003392*^9}, 
+   3.762672046955304*^9},
+ CellLabel->
+  "In[1979]:=",ExpressionUUID->"4f2b4874-40a2-495f-af19-1b291855103d"],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "2"], " ", 
+  RowBox[{"(", 
+   RowBox[{"b", "+", 
+    RowBox[{"2", " ", "x"}], "-", 
+    RowBox[{"b", " ", "\[Alpha]"}]}], ")"}]}]], "Output",
+ CellChangeTimes->{
+  3.762668631040598*^9, 3.762668707446022*^9, 3.76266877154399*^9, {
+   3.762668831204054*^9, 3.76266886592836*^9}, {3.762669023861773*^9, 
+   3.762669054584597*^9}, {3.762669310521195*^9, 3.762669323642666*^9}, {
+   3.762669428704535*^9, 3.7626694383924*^9}, 3.7626696339753723`*^9, 
+   3.762669666416033*^9, 3.7626706469647512`*^9, 3.762670689515642*^9, {
+   3.762670731874358*^9, 3.762670766698852*^9}, 3.762670898698971*^9, {
+   3.762671194199009*^9, 3.7626712238632507`*^9}, {3.762671308896718*^9, 
+   3.762671390675462*^9}, 3.762671480739707*^9, {3.762671915189345*^9, 
+   3.762671974451623*^9}, 3.7626720169993896`*^9, 3.7626720491058702`*^9},
+ CellLabel->
+  "Out[1982]=",ExpressionUUID->"74da0b1b-7455-4c6d-ab4c-71b4a3ebf048"],
+
+Cell[BoxData["x"], "Output",
+ CellChangeTimes->{
+  3.762668631040598*^9, 3.762668707446022*^9, 3.76266877154399*^9, {
+   3.762668831204054*^9, 3.76266886592836*^9}, {3.762669023861773*^9, 
+   3.762669054584597*^9}, {3.762669310521195*^9, 3.762669323642666*^9}, {
+   3.762669428704535*^9, 3.7626694383924*^9}, 3.7626696339753723`*^9, 
+   3.762669666416033*^9, 3.7626706469647512`*^9, 3.762670689515642*^9, {
+   3.762670731874358*^9, 3.762670766698852*^9}, 3.762670898698971*^9, {
+   3.762671194199009*^9, 3.7626712238632507`*^9}, {3.762671308896718*^9, 
+   3.762671390675462*^9}, 3.762671480739707*^9, {3.762671915189345*^9, 
+   3.762671974451623*^9}, 3.7626720169993896`*^9, 3.762672049238886*^9},
+ CellLabel->
+  "Out[1985]=",ExpressionUUID->"bae375df-6450-445e-85ba-1e41847031a3"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   FractionBox["1", "36"], " ", 
+   RowBox[{"(", 
+    RowBox[{
+     SuperscriptBox["b", "2"], "+", 
+     RowBox[{"2", " ", 
+      SuperscriptBox["b", "2"], " ", "\[Alpha]"}], "-", 
+     RowBox[{"3", " ", 
+      SuperscriptBox["b", "2"], " ", 
+      SuperscriptBox["\[Alpha]", "2"]}], "+", 
+     RowBox[{"12", " ", "\[Alpha]", " ", 
+      SuperscriptBox["\[Sigma]", "2"]}]}], ")"}]}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.762668631040598*^9, 3.762668707446022*^9, 3.76266877154399*^9, {
+   3.762668831204054*^9, 3.76266886592836*^9}, {3.762669023861773*^9, 
+   3.762669054584597*^9}, {3.762669310521195*^9, 3.762669323642666*^9}, {
+   3.762669428704535*^9, 3.7626694383924*^9}, 3.7626696339753723`*^9, 
+   3.762669666416033*^9, 3.7626706469647512`*^9, 3.762670689515642*^9, {
+   3.762670731874358*^9, 3.762670766698852*^9}, 3.762670898698971*^9, {
+   3.762671194199009*^9, 3.7626712238632507`*^9}, {3.762671308896718*^9, 
+   3.762671390675462*^9}, 3.762671480739707*^9, {3.762671915189345*^9, 
+   3.762671974451623*^9}, 3.7626720169993896`*^9, 3.762672049534596*^9},
+ CellLabel->
+  "Out[1987]=",ExpressionUUID->"c16f06d3-4fb6-44b5-abdc-3edfff53869d"],
+
+Cell[BoxData[
+ RowBox[{"Expectation", "[", 
+  RowBox[{"y", ",", 
+   RowBox[{"y", "\[Distributed]", 
+    RowBox[{"OrderDistribution", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"TransformedDistribution", "[", 
+         RowBox[{
+          RowBox[{"\[FormalX]", "+", "x"}], ",", 
+          RowBox[{"\[FormalX]", "\[Distributed]", 
+           RowBox[{"MixtureDistribution", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"\[Alpha]", ",", 
+               RowBox[{"1", "-", "\[Alpha]"}]}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"NormalDistribution", "[", 
+                RowBox[{"0", ",", "\[Sigma]"}], "]"}], ",", 
+               RowBox[{"UniformDistribution", "[", 
+                RowBox[{"{", 
+                 RowBox[{"0", ",", "b"}], "}"}], "]"}]}], "}"}]}], "]"}]}]}], 
+         "]"}], ",", "n"}], "}"}], ",", 
+      RowBox[{"1", "+", 
+       RowBox[{"Floor", "[", 
+        FractionBox[
+         RowBox[{"N", " ", "\[Alpha]"}], "2"], "]"}]}]}], "]"}]}]}], 
+  "]"}]], "Output",
+ CellChangeTimes->{
+  3.762668631040598*^9, 3.762668707446022*^9, 3.76266877154399*^9, {
+   3.762668831204054*^9, 3.76266886592836*^9}, {3.762669023861773*^9, 
+   3.762669054584597*^9}, {3.762669310521195*^9, 3.762669323642666*^9}, {
+   3.762669428704535*^9, 3.7626694383924*^9}, 3.7626696339753723`*^9, 
+   3.762669666416033*^9, 3.7626706469647512`*^9, 3.762670689515642*^9, {
+   3.762670731874358*^9, 3.762670766698852*^9}, 3.762670898698971*^9, {
+   3.762671194199009*^9, 3.7626712238632507`*^9}, {3.762671308896718*^9, 
+   3.762671390675462*^9}, 3.762671480739707*^9, {3.762671915189345*^9, 
+   3.762671974451623*^9}, 3.7626720169993896`*^9, 3.762672169656864*^9},
+ CellLabel->
+  "Out[1990]=",ExpressionUUID->"8da640d0-3c31-4af7-8c01-0dc8e656ee96"]
+}, Open  ]]
+},
+WindowSize->{808, 911},
+WindowMargins->{{88, Automatic}, {36, Automatic}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 6216, 170, 493, "Input",ExpressionUUID->"4f2b4874-40a2-495f-af19-1b291855103d"],
+Cell[6799, 194, 940, 18, 50, "Output",ExpressionUUID->"74da0b1b-7455-4c6d-ab4c-71b4a3ebf048"],
+Cell[7742, 214, 781, 12, 34, "Output",ExpressionUUID->"bae375df-6450-445e-85ba-1e41847031a3"],
+Cell[8526, 228, 1194, 25, 51, "Output",ExpressionUUID->"c16f06d3-4fb6-44b5-abdc-3edfff53869d"],
+Cell[9723, 255, 1837, 41, 140, "Output",ExpressionUUID->"8da640d0-3c31-4af7-8c01-0dc8e656ee96"]
+}, Open  ]]
+}
+]
+*)
+

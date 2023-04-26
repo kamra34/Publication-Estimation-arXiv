@@ -1,0 +1,156 @@
+\begin{thebibliography}{10}
+
+\bibitem{article:PI_kassam_85}
+S.~A. Kassam and H.~V. Poor.
+\newblock Robust techniques for signal processing: A survey.
+\newblock {\em Proceedings of the IEEE}, 73(3):433--481, March 1985.
+
+\bibitem{book:ET_kay_93}
+S.~M. Kay.
+\newblock {\em Fundamentals of Statistical Signal Processing: Estimation
+  Theory}.
+\newblock Prentice-Hall, Inc., Upper Saddle River, NJ, USA, 1993.
+
+\bibitem{book:TPE_lehmann}
+E.~L. Lehmann and G.~Casella.
+\newblock {\em Theory of Point Estimation}.
+\newblock Springer-Verlag New York, 1998.
+
+\bibitem{article:ITVT_kok_15}
+M.~Kok, J.~D. Hol, and T.~B. Schön.
+\newblock Indoor positioning using ultrawideband and inertial measurements.
+\newblock {\em IEEE Transactions on Vehicular Technology}, 64(4):1293--1303,
+  April 2015.
+
+\bibitem{article:ITVT_chen_09}
+B.~Chen, C.~Yang, F.~Liao, and J.~Liao.
+\newblock Mobile location estimator in a rough wireless environment using
+  extended kalman-based {IMM} and data fusion.
+\newblock {\em IEEE Transactions on Vehicular Technology}, 58(3):1157--1169,
+  March 2009.
+
+\bibitem{article:ISPM_gustafsson_05}
+F.~Gustafsson and F.~Gunnarsson.
+\newblock Mobile positioning using wireless networks: possibilities and
+  fundamental limitations based on available wireless network measurements.
+\newblock {\em IEEE Signal Processing Magazine}, 22(4):41--53, July 2005.
+
+\bibitem{article:IME_eling_12}
+M.~Eling.
+\newblock Fitting insurance claims to skewed distributions: Are the skew-normal
+  and skew-student good models?
+\newblock {\em Insurance: Mathematics and Economics}, 51(2):239--248, 2012.
+
+\bibitem{conf:PIMRC_medbo_09}
+J.~Medbo, I.~Siomina, A.~Kangas, and J.~Furuskog.
+\newblock Propagation channel impact on {LTE} positioning accuracy: A study
+  based on real measurements of observed time difference of arrival.
+\newblock In {\em Proc. of 20th IEEE International Symposium on Personal,
+  Indoor and Mobile Radio Communications}, pages 2213--2217, Westin Toyko,
+  Toyko, Japan, September 2009.
+
+\bibitem{article:ITSP_yin_13}
+F.~Yin, C.~Fritsche, F.~Gustafsson, and A.~M. Zoubir.
+\newblock {TOA}-based robust wireless geolocation and cram\'{e}r-rao lower
+  bound analysis in harsh {LOS}/{NLOS} environments.
+\newblock {\em IEEE Transactions on Signal Processing}, 61(9):2243--2255, May
+  2013.
+
+\bibitem{article:JASA_stigler_73}
+S.~M. Stigler.
+\newblock {S}imon {N}ewcomb, {P}ercy {D}aniell, and the history of robust
+  estimation 1885-1920.
+\newblock {\em Journal of the American Statistical Association},
+  68(344):872--879, 1973.
+
+\bibitem{book:SDNGN_kassam}
+S.~A. Kassam.
+\newblock {\em Signal Detection in Non-Gaussian Noise}.
+\newblock Springer-Verlag New York, 1988.
+
+\bibitem{article:SIAM_stewart_99}
+C.~Stewart.
+\newblock Robust parameter estimation in computer vision.
+\newblock {\em SIAM Review}, 41(3):513--537, 1999.
+
+\bibitem{book:NSP_arce}
+G.~R. Arce.
+\newblock {\em Nonlinear Signal Processing: A Statistical Approach}.
+\newblock Hoboken, NJ: Wiley, 2004.
+
+\bibitem{article:ISPM_zoubir_12}
+A.~M. Zoubir, V.~Koivunen, Y.~Chakhchoukh, and M.~Muma.
+\newblock Robust estimation in signal processing: A tutorial-style treatment of
+  fundamental concepts.
+\newblock {\em IEEE Signal Processing Magazine}, 29(4):61--80, July 2012.
+
+\bibitem{conf:ICML_eskin_00}
+E.~Eskin.
+\newblock Anomaly detection over noisy data using learned probability
+  distributions.
+\newblock In {\em In Proc. of the International Conference on Machine
+  Learning}, pages 255--262, Stanford, CA, USA, June 2000.
+
+\bibitem{article:DMKD_chawla_10}
+S.~Chawla, D.~Hand, and V.~Dhar.
+\newblock Outlier detection special issue.
+\newblock {\em Data Mining and Knowledge Discovery}, 20(2):189--190, March
+  2010.
+
+\bibitem{article:AIR_hodge_04}
+V.~J. Hodge and J.~Austin.
+\newblock A survey of outlier detection methodologies.
+\newblock {\em Artificial Intelligence Review}, 22(2):85--126, October 2004.
+
+\bibitem{conf:ICASSP_fritsche_09}
+C.~Fritsche, U.~Hammes, A.~Klein, and A.~M. Zoubir.
+\newblock Robust mobile terminal tracking in {NLOS} environments using
+  interacting multiple model algorithm.
+\newblock In {\em Proc. of International Conference on Acoustics, Speech and
+  Signal Processing (ICASSP)}, pages 3049--3052, Taipei, Taiwan, April 2009.
+
+\bibitem{book:RS_huber}
+P.J. Huber and E.M. Ronchetti.
+\newblock {\em Robust Statistics}.
+\newblock Hoboken, NJ: Wiley,, 2009.
+
+\bibitem{book:RSTM_maronna}
+R.~A. Maronna, R.~D. Martin, and V.~J. Yohai.
+\newblock {\em Robust Statistics: Theory and Methods}.
+\newblock Hoboken, NJ: Wiley,, 2006.
+
+\bibitem{article:IJS_lehmann_1}
+E.~L. Lehmann and H.~Scheff\'{e}.
+\newblock Completeness, similar regions, and unbiased estimation: Part {I}.
+\newblock {\em The Indian Journal of Statistics}, 10(4):305--340, 1950.
+
+\bibitem{article:IJS_lehmann_2}
+E.~L. Lehmann and H.~Scheff\'{e}.
+\newblock Completeness, similar regions, and unbiased estimation: Part {II}.
+\newblock {\em The Indian Journal of Statistics}, 15(3):219--236, July 1955.
+
+\bibitem{article:fisher_22}
+R.~A. Fisher and M.~A. Phil.
+\newblock On the mathematical foundations of theoretical statistics.
+\newblock {\em Philosophical Transactions of the Royal Society of London A:
+  Mathematical, Physical and Engineering Sciences}, 222(594-604):309--368,
+  January 1922.
+
+\bibitem{article:AMS_halmos_49}
+P.~R. Halmos and L.~J. Savage.
+\newblock Application of the {Radon}-{Nikodym} theorem to the theory of
+  sufficient statistics.
+\newblock {\em The Annals of Mathematical Statistics}, 20(2):225--241, June
+  1949.
+
+\bibitem{article:Mcdonal_JE_95}
+J.~B. McDonald and Y.~J. Xu.
+\newblock A generalization of the beta distribution with applications.
+\newblock {\em Journal of Econometrics}, 66(1):133--152, March 1995.
+
+\bibitem{book:OS_david_04}
+H.~A. David and H.~N. Nagaraja.
+\newblock {\em Order Statistics}.
+\newblock John Wiley \& Sons, 2004.
+
+\end{thebibliography}

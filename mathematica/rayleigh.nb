@@ -1,0 +1,320 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     10731,        312]
+NotebookOptionsPosition[      9814,        290]
+NotebookOutlinePosition[     10173,        306]
+CellTagsIndexPosition[     10130,        303]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "Asumptions", " ", "that", " ", "are", " ", "explicitly", " ", 
+    "considered"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"defAssum", " ", ":=", 
+     RowBox[{
+      RowBox[{"Element", "[", 
+       RowBox[{"s", ",", "Reals"}], "]"}], "&&", 
+      RowBox[{"s", ">", "0"}], "&&", 
+      RowBox[{"Element", "[", 
+       RowBox[{"N", ",", "Integers"}], "]"}], "&&", 
+      RowBox[{"N", ">", "0"}], "&&", 
+      RowBox[{"Element", "[", 
+       RowBox[{"k", ",", "Integers"}], "]"}], "&&", 
+      RowBox[{"k", ">", "0"}], "&&", 
+      RowBox[{"k", "\[LessEqual]", "N"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Rayleigh", " ", "CDF"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"RayleighCDF", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"1", "-", 
+        RowBox[{"Exp", "[", 
+         RowBox[{
+          RowBox[{"-", 
+           RowBox[{"x", "^", "2"}]}], "/", 
+          RowBox[{"(", 
+           RowBox[{"2", "*", 
+            RowBox[{"s", "^", "2"}]}], ")"}]}], "]"}]}], "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Raileigh", " ", "PDF"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"RayleighPDF", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"D", "[", 
+        RowBox[{
+         RowBox[{"RayleighCDF", "[", "x", "]"}], ",", "x"}], "]"}], "]"}]}], 
+     "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "check", " ", "if", " ", "pdf", " ", "integral", " ", "is", " ", "1"}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Element", "[", 
+        RowBox[{"s", ",", "Reals"}], "]"}], "&&", 
+       RowBox[{"s", ">", "0"}]}], ",", 
+      RowBox[{"Integrate", "[", 
+       RowBox[{
+        RowBox[{"RayleighPDF", "[", "x", "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", "0", ",", "Infinity"}], "}"}]}], "]"}]}], "]"}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "General", " ", "order", " ", "statistic", " ", "pdf", " ", "of", " ", 
+     "Rayleigh", " ", "noise"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"RayleighPDForder", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"N", "*", 
+        RowBox[{"RayleighPDF", "[", "x", "]"}], "*", 
+        RowBox[{"Binomial", "[", 
+         RowBox[{
+          RowBox[{"N", "-", "1"}], ",", 
+          RowBox[{"k", "-", "1"}]}], "]"}], "*", 
+        RowBox[{
+         RowBox[{"RayleighCDF", "[", "x", "]"}], "^", 
+         RowBox[{"(", 
+          RowBox[{"k", "-", "1"}], ")"}]}], "*", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"1", "-", 
+            RowBox[{"RayleighCDF", "[", "x", "]"}]}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"N", "-", "k"}], ")"}]}], ")"}]}], "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "minimum", " ", "order", " ", "statistic", " ", "pdf", " ", "of", " ", 
+     "Rayleigh", " ", "noise"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"RayleighPDFMinorder", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"N", "*", 
+        RowBox[{"RayleighPDF", "[", "x", "]"}], "*", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"1", "-", 
+            RowBox[{"RayleighCDF", "[", "x", "]"}]}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"N", "-", "1"}], ")"}]}], ")"}]}], "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "bias", " ", "of", " ", "minimum", " ", "order", " ", "statistic", " ", 
+     "for", " ", "Rayleigh", " ", "noise"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"RayleighMean", "[", "x_", "]"}], "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{"Integrate", "[", 
+        RowBox[{
+         RowBox[{"x", "*", 
+          RowBox[{"RayleighPDFMinorder", "[", "x", "]"}]}], ",", 
+         RowBox[{"{", 
+          RowBox[{"x", ",", "0", ",", "Infinity"}], "}"}]}], "]"}], "]"}]}], 
+     "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Variance", " ", "of", " ", "minimum", " ", "order", " ", "statistic", 
+     " ", "for", " ", "Rayleigh", " ", "noise"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"RayleighVar", "=", 
+    RowBox[{"Assuming", "[", 
+     RowBox[{"defAssum", ",", 
+      RowBox[{"FullSimplify", "[", 
+       RowBox[{
+        RowBox[{"FullSimplify", "[", 
+         RowBox[{"Integrate", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"x", "^", "2"}], "*", 
+            RowBox[{"RayleighPDFMinorder", "[", "x", "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"x", ",", "0", ",", "Infinity"}], "}"}]}], "]"}], "]"}], 
+        "-", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"RayleighMean", "[", "x", "]"}], ")"}], "^", "2"}]}], 
+       "]"}]}], "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.745217899575984*^9, 3.7452179861120872`*^9}, {
+  3.745218026468923*^9, 3.7452180266936827`*^9}, {3.745219188289209*^9, 
+  3.745219259916556*^9}, {3.745219319907445*^9, 3.745219338241684*^9}, {
+  3.7452193697875423`*^9, 3.745219379484919*^9}, {3.745219450645616*^9, 
+  3.745219569366782*^9}, {3.745219608560223*^9, 
+  3.745219673610776*^9}},ExpressionUUID->"a52cfca0-d757-418b-b5a9-\
+cf0bbaca7d3e"],
+
+Cell[BoxData[
+ RowBox[{"1", "-", 
+  SuperscriptBox["\[ExponentialE]", 
+   RowBox[{"-", 
+    FractionBox[
+     SuperscriptBox["x", "2"], 
+     RowBox[{"2", " ", 
+      SuperscriptBox["s", "2"]}]]}]]}]], "Output",
+ CellChangeTimes->{3.745217989338188*^9, 3.745218042230734*^9, 
+  3.745219228724489*^9, 3.745219334229126*^9, 3.745219467648333*^9, 
+  3.745219690278123*^9, 
+  3.745227754018268*^9},ExpressionUUID->"dfe06e6d-4831-40bd-ba3e-\
+33f0a7aaf170"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{
+   SuperscriptBox["\[ExponentialE]", 
+    RowBox[{"-", 
+     FractionBox[
+      SuperscriptBox["x", "2"], 
+      RowBox[{"2", " ", 
+       SuperscriptBox["s", "2"]}]]}]], " ", "x"}], 
+  SuperscriptBox["s", "2"]]], "Output",
+ CellChangeTimes->{3.745217989338188*^9, 3.745218042230734*^9, 
+  3.745219228724489*^9, 3.745219334229126*^9, 3.745219467648333*^9, 
+  3.745219690278123*^9, 
+  3.7452277540215883`*^9},ExpressionUUID->"546921ed-2b17-4d66-96eb-\
+5533b74a52a2"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{
+   SuperscriptBox["\[ExponentialE]", 
+    FractionBox[
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "1"}], "+", "k", "-", "N"}], ")"}], " ", 
+      SuperscriptBox["x", "2"]}], 
+     RowBox[{"2", " ", 
+      SuperscriptBox["s", "2"]}]]], " ", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     RowBox[{"1", "-", 
+      SuperscriptBox["\[ExponentialE]", 
+       RowBox[{"-", 
+        FractionBox[
+         SuperscriptBox["x", "2"], 
+         RowBox[{"2", " ", 
+          SuperscriptBox["s", "2"]}]]}]]}], ")"}], 
+    RowBox[{
+     RowBox[{"-", "1"}], "+", "k"}]], " ", "N", " ", "x", " ", 
+   RowBox[{"Binomial", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"-", "1"}], "+", "N"}], ",", 
+     RowBox[{
+      RowBox[{"-", "1"}], "+", "k"}]}], "]"}]}], 
+  SuperscriptBox["s", "2"]]], "Output",
+ CellChangeTimes->{3.745217989338188*^9, 3.745218042230734*^9, 
+  3.745219228724489*^9, 3.745219334229126*^9, 3.745219467648333*^9, 
+  3.745219690278123*^9, 
+  3.7452277541161213`*^9},ExpressionUUID->"1c97f048-e130-4ce3-a613-\
+461cf540d67a"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{
+   SuperscriptBox["\[ExponentialE]", 
+    RowBox[{"-", 
+     FractionBox[
+      RowBox[{"N", " ", 
+       SuperscriptBox["x", "2"]}], 
+      RowBox[{"2", " ", 
+       SuperscriptBox["s", "2"]}]]}]], " ", "N", " ", "x"}], 
+  SuperscriptBox["s", "2"]]], "Output",
+ CellChangeTimes->{3.745217989338188*^9, 3.745218042230734*^9, 
+  3.745219228724489*^9, 3.745219334229126*^9, 3.745219467648333*^9, 
+  3.745219690278123*^9, 
+  3.745227754134272*^9},ExpressionUUID->"534e6d30-9099-4a7c-a74e-\
+acedd51ec2a6"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{
+   SqrtBox[
+    FractionBox["\[Pi]", "2"]], " ", "s"}], 
+  SqrtBox["N"]]], "Output",
+ CellChangeTimes->{3.745217989338188*^9, 3.745218042230734*^9, 
+  3.745219228724489*^9, 3.745219334229126*^9, 3.745219467648333*^9, 
+  3.745219690278123*^9, 
+  3.745227754312335*^9},ExpressionUUID->"ecf9abcd-ec06-4a3e-8b40-\
+eff026e12bbd"],
+
+Cell[BoxData[
+ RowBox[{"-", 
+  FractionBox[
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "4"}], "+", "\[Pi]"}], ")"}], " ", 
+    SuperscriptBox["s", "2"]}], 
+   RowBox[{"2", " ", "N"}]]}]], "Output",
+ CellChangeTimes->{3.745217989338188*^9, 3.745218042230734*^9, 
+  3.745219228724489*^9, 3.745219334229126*^9, 3.745219467648333*^9, 
+  3.745219690278123*^9, 
+  3.745227754446046*^9},ExpressionUUID->"1fa3179d-ce65-40bb-9d78-\
+b91733f59188"]
+}, Open  ]]
+},
+WindowSize->{808, 911},
+WindowMargins->{{12, Automatic}, {Automatic, 24}},
+FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 5795, 155, 535, "Input",ExpressionUUID->"a52cfca0-d757-418b-b5a9-cf0bbaca7d3e"],
+Cell[6378, 179, 451, 12, 49, "Output",ExpressionUUID->"dfe06e6d-4831-40bd-ba3e-33f0a7aaf170"],
+Cell[6832, 193, 504, 14, 70, "Output",ExpressionUUID->"546921ed-2b17-4d66-96eb-5533b74a52a2"],
+Cell[7339, 209, 1090, 34, 87, "Output",ExpressionUUID->"1c97f048-e130-4ce3-a613-461cf540d67a"],
+Cell[8432, 245, 540, 15, 70, "Output",ExpressionUUID->"534e6d30-9099-4a7c-a74e-acedd51ec2a6"],
+Cell[8975, 262, 363, 10, 64, "Output",ExpressionUUID->"ecf9abcd-ec06-4a3e-8b40-eff026e12bbd"],
+Cell[9341, 274, 457, 13, 53, "Output",ExpressionUUID->"1fa3179d-ce65-40bb-9d78-b91733f59188"]
+}, Open  ]]
+}
+]
+*)
+
